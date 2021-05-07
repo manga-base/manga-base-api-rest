@@ -1,0 +1,4 @@
+/vendor/
+settings.php
+*.sql
+/public/upload/
