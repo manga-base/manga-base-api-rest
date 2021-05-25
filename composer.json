@@ -1,4 +1,21 @@
 {
+    "name": "manga-base/api-rest",
+    "description": "Api Rest de Manga Base",
+    "version": "1.0.0",
+    "keywords": [
+        "manga",
+        "database"
+    ],
+    "homepage": "https://mangabase.tk",
+    "readme": "./README.md",
+    "authors": [
+        {
+            "name": "Tomeu Pau Clar Isern",
+            "email": "bartomeupauclar@paucasesnovescifp.cat",
+            "homepage": "https://github.com/TomeuPauClar",
+            "role": "Developer"
+        }
+    ],
     "require": {
         "slim/slim": "3.*",
         "illuminate/database": "^8.38",
