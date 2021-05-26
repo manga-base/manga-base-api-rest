@@ -13,6 +13,7 @@ class Respuesta
         self::$correcta = $correcta;
         self::$mensaje = $mensaje;
         self::$datos = $datos == null ? self::$datos : $datos;
+        return self::toString();
     }
 
     public static function setDatos($datos)

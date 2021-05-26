@@ -6,15 +6,10 @@ use App\Lib\Respuesta;
 
 $app->group('/comentario/', function () {
 
-    $this->post(
-        'test/',
-        function ($req, $res, $args) {
-            $body = $req->getParsedBody();
-            Respuesta::setDatos(Comentario::getComentario($body['idComentario'], $body['idUsuario']));
-            return $res->withJson(Respuesta::toString());
-        }
-
-    );
+    $this->get('manga/{id}', function ($req, $res, $args) {
+        $decodetToken = $req->getAttribute('decoded_token_data');
+        return $res->withJson(Comentario::getComentariosManga($args['id'], $decodetToken['usuario']->id));
+    });
 
     $this->post(
         '',

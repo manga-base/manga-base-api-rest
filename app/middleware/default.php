@@ -4,7 +4,7 @@ use \Tuupola\Middleware\JwtAuthentication;
 use App\Lib\Respuesta;
 
 $app->add(new JwtAuthentication([
-    "path" => ["/whoami", "/usuario/", "/amistades/", "/comentario/", "/puntuacion-comentario/"],
+    "path" => ["/whoami", "/usuario/", "/amistades/", "/comentario/", "/puntuacion-comentario/", "/comentario-manga/", "/manga-usuario/"],
     "attribute" => "decoded_token_data",
     "secret" => "g4165gf1fdfsd6fgdsg65fd6fsdfsd1v654dfsd15",
     "algorithm" => ["HS256"],
