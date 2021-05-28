@@ -2,8 +2,6 @@
 
 namespace App\Model;
 
-use Illuminate\Database\Capsule\Manager as DB;
-
 class MangaUsuario extends \Illuminate\Database\Eloquent\Model
 {
     protected $table = 'manga_usuario';

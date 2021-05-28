@@ -13,7 +13,7 @@ $app->group('/usuario/', function () {
             return $res->withJson($usuarios);
         }
     );
-    
+
     $this->get(
         '{id}',
         function ($req, $res, $args) {
@@ -22,7 +22,7 @@ $app->group('/usuario/', function () {
             return $res->withJson($usuario);
         }
     );
-    
+
     $this->get(
         '{id}/profile',
         function ($req, $res, $args) {
@@ -36,17 +36,18 @@ $app->group('/usuario/', function () {
         }
     );
 
-    // $this->post(
-    //     '', function ($req, $res, $args)
-    //     {
-    //         $body = $req->getParsedBody();
-    //         $files = $req->getUploadedFiles();
-    //         if (isset($files['avatar'])) {
-    //             # code...
-    //         }
+    $this->post(
+        'avatar',
+        function ($req, $res, $args) {
+            $body = $req->getParsedBody();
+            $files = $req->getUploadedFiles();
+            return $res->withJson(array("body" => $body, "files" => $files));
+            // if (isset($files['avatar'])) {
+            //     # code...
+            // }
 
-    //         // is_uploaded_file()
-    //         // move_uploaded_file()
-    //     }
-    // );
+            // is_uploaded_file()
+            // move_uploaded_file()
+        }
+    );
 });
