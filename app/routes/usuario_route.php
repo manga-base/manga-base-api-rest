@@ -50,12 +50,17 @@ $app->group('/usuario/', function () {
                         $image_name = $usuario->id . "-avatar-" . $usuario->username . ".jpg";
                         $tmp_name = $avatar;
                         $dest_name = '/var/www/rest.mangabase.tk/public/upload/images/avatars/' . $image_name;
-                        $resp = move_uploaded_file($tmp_name, $dest_name);
-                        $avatar = $image_name;
-                        Respuesta::set(true, '', [$usuario, $avatar, $image_name, $tmp_name, $files['avatar'], $dest_name, $resp]);
+                        if (!move_uploaded_file($tmp_name, $dest_name)) {
+                            Respuesta::set(false, 'Algo ha fallado guardando la imagen en su directorio.');
+                            return $res->withJson(Respuesta::toString());
+                        }
+                        $us = Usuario::find($usuario->id);
+                        $us->avatar = $image_name;
+                        $us->save();
+                        Respuesta::set(true, 'Avatar modificado correctamente.');
                         return $res->withJson(Respuesta::toString());
                     } catch (Exception $error) {
-                        Respuesta::set(false, $error . "aaaaaaaaaaaaaaaaaaaa");
+                        Respuesta::set(false, $error);
                         return $res->withJson(Respuesta::toString());
                     }
                 }
