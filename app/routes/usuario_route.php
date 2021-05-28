@@ -67,12 +67,12 @@ $app->group('/usuario/', function () {
                 return $res->withJson(Respuesta::set(false, ["field" => "biografia", "msg" => "Formato de biografia incorrecto (máx. 160)."]));
             }
 
-            $nombre_usuario_existente = Usuario::where('username', 'like', $userneme)->get();
+            $nombre_usuario_existente = Usuario::where('id', '!=', $usuarioToken->id)->where('username', 'like', $userneme)->get();
             if (count($nombre_usuario_existente) > 0) {
                 return $res->withJson(Respuesta::set(false, ["field" => "userneme", "msg" => "Este nombre de ususario ya está en uso."]));
             }
 
-            $email_existente = Usuario::where('email', 'like', $email)->get();
+            $email_existente = Usuario::where('id', '!=', $usuarioToken->id)->where('email', 'like', $email)->get();
             if (count($email_existente) > 0) {
                 return $res->withJson(Respuesta::set(false, ["field" => "email", "msg" => "Este email ya está en uso."]));
             }
