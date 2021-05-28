@@ -50,12 +50,12 @@ $app->group('/usuario/', function () {
                         $image_name = $usuario->id . "avatar_" . $usuario->username . ".jpg";
                         $tmp_name = $avatar;
                         $dest_name = '/var/www/rest.mangabase.tk/public/upload/images/avatars/' . $image_name;
-                        $resp = move_uploaded_file($tmp_name, $dest_name);
-                        $avatar = $image_name;
-                        Respuesta::set(true, '', [$usuario, $avatar, $image_name, $tmp_name, $files['avatar'], $dest_name, $resp]);
+                        //$resp = move_uploaded_file($tmp_name, $dest_name);
+                        //$avatar = $image_name;
+                        Respuesta::set(true, '', [$usuario, $avatar, $image_name, $tmp_name, $files['avatar'], $dest_name]);
                         return $res->withJson(Respuesta::toString());
                     } catch (Exception $error) {
-                        Respuesta::set(false, $error);
+                        Respuesta::set(false, $error . "aaaaaaaaaaaaaaaaaaaa");
                         return $res->withJson(Respuesta::toString());
                     }
                 }
