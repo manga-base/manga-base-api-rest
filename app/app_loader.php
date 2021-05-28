@@ -1,4 +1,4 @@
-<?php
+<?php        
 $base = __DIR__ . '/../app/';
 $folders = [
     'config',
