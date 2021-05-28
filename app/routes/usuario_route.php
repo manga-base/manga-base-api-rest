@@ -44,15 +44,15 @@ $app->group('/usuario/', function () {
             $usuario = $decodetToken['usuario'];
             $files = $req->getUploadedFiles();
             if (isset($files['avatar'])) {
-                $avatar = $files['avatar'];
+                $avatar = $files['avatar']->file;
                 if (($avatar <> '') && is_uploaded_file($avatar)) {
                     try {
-                        $image_name = $usuario->id . "avatar_" . $usuario->username . ".jpg";
+                        $image_name = $usuario->id . "-avatar-" . $usuario->username . ".jpg";
                         $tmp_name = $avatar;
                         $dest_name = '/var/www/rest.mangabase.tk/public/upload/images/avatars/' . $image_name;
-                        //$resp = move_uploaded_file($tmp_name, $dest_name);
-                        //$avatar = $image_name;
-                        Respuesta::set(true, '', [$usuario, $avatar, $image_name, $tmp_name, $files['avatar'], $dest_name]);
+                        $resp = move_uploaded_file($tmp_name, $dest_name);
+                        $avatar = $image_name;
+                        Respuesta::set(true, '', [$usuario, $avatar, $image_name, $tmp_name, $files['avatar'], $dest_name, $resp]);
                         return $res->withJson(Respuesta::toString());
                     } catch (Exception $error) {
                         Respuesta::set(false, $error . "aaaaaaaaaaaaaaaaaaaa");
