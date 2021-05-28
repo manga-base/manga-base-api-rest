@@ -68,9 +68,40 @@ $app->group('/usuario/', function () {
                 Respuesta::set(false, 'Faltan campos.');
                 return $res->withJson(Respuesta::toString());
             }
+        }
+    );
 
-            // is_uploaded_file()
-            // move_uploaded_file()
+    $this->post(
+        'banner',
+        function ($req, $res, $args) {
+            $decodetToken = $req->getAttribute('decoded_token_data');
+            $usuario = $decodetToken['usuario'];
+            $files = $req->getUploadedFiles();
+            if (isset($files['banner'])) {
+                $banner = $files['banner']->file;
+                if (($banner <> '') && is_uploaded_file($banner)) {
+                    try {
+                        $image_name = $usuario->id . "-banner-" . $usuario->username . ".jpg";
+                        $tmp_name = $banner;
+                        $dest_name = '/var/www/rest.mangabase.tk/public/upload/images/banners/' . $image_name;
+                        if (!move_uploaded_file($tmp_name, $dest_name)) {
+                            Respuesta::set(false, 'Algo ha fallado guardando la imagen en su directorio.');
+                            return $res->withJson(Respuesta::toString());
+                        }
+                        $us = Usuario::find($usuario->id);
+                        $us->banner = $image_name;
+                        $us->save();
+                        Respuesta::set(true, 'Banner modificado correctamente.');
+                        return $res->withJson(Respuesta::toString());
+                    } catch (Exception $error) {
+                        Respuesta::set(false, $error);
+                        return $res->withJson(Respuesta::toString());
+                    }
+                }
+            } else {
+                Respuesta::set(false, 'Faltan campos.');
+                return $res->withJson(Respuesta::toString());
+            }
         }
     );
 });
