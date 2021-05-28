@@ -1,5 +1,6 @@
 <?php
 
+use App\Lib\Respuesta;
 use App\Model\Comentario;
 use App\Model\Usuario;
 use App\Model\MangaUsuario;
@@ -39,12 +40,29 @@ $app->group('/usuario/', function () {
     $this->post(
         'avatar',
         function ($req, $res, $args) {
-            $body = $req->getParsedBody();
+            $decodetToken = $req->getAttribute('decoded_token_data');
+            $usuario = $decodetToken['usuario'];
             $files = $req->getUploadedFiles();
-            return $res->withJson(array("body" => $body, "files" => $files));
-            // if (isset($files['avatar'])) {
-            //     # code...
-            // }
+            if (isset($files['avatar'])) {
+                $avatar = $files['avatar'];
+                if (($avatar <> '') && is_uploaded_file($avatar)) {
+                    try {
+                        $image_name = $usuario->id . "avatar_" . $usuario->username . ".jpg";
+                        $tmp_name = $avatar;
+                        $dest_name = '/var/www/rest.mangabase.tk/public/upload/images/avatars/' . $image_name;
+                        $resp = move_uploaded_file($tmp_name, $dest_name);
+                        $avatar = $image_name;
+                        Respuesta::set(true, '', [$usuario, $avatar, $image_name, $tmp_name, $files['avatar'], $dest_name, $resp]);
+                        return $res->withJson(Respuesta::toString());
+                    } catch (Exception $error) {
+                        Respuesta::set(false, $error);
+                        return $res->withJson(Respuesta::toString());
+                    }
+                }
+            } else {
+                Respuesta::set(false, 'Faltan campos.');
+                return $res->withJson(Respuesta::toString());
+            }
 
             // is_uploaded_file()
             // move_uploaded_file()
