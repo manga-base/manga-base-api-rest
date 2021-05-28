@@ -37,6 +37,61 @@ $app->group('/usuario/', function () {
         }
     );
 
+    $this->put(
+        '',
+        function ($req, $res, $args) {
+            $body = $req->getParsedBody();
+            $decodetToken = $req->getAttribute('decoded_token_data');
+            $usuarioToken = $decodetToken['usuario'];
+            if (!isset($body["username"]) || !isset($body["email"]) || !isset($body["password"]) || !isset($body["biografia"])) {
+                return $res->withJson(Respuesta::set(false, 'Faltan campos.'));
+            }
+            $userneme = $body["username"];
+            $email = $body["email"];
+            $password = $body["password"];
+            $biografia = $body["biografia"];
+
+            if (strlen($userneme) < 3 || strlen($userneme) > 50) {
+                return $res->withJson(Respuesta::set(false, ["field" => "userneme", "msg" => "Formato de nombre de usuario incorrecto (mín. 3, máx. 50)."]));
+            }
+
+            if (strlen($email) < 3 || strlen($email) > 100) {
+                return $res->withJson(Respuesta::set(false, ["field" => "userneme", "msg" => "Formato de email incorrecto (mín. 3, máx. 100)."]));
+            }
+
+            if (!preg_match("/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,255}$/", $password)) {
+                return $res->withJson(Respuesta::set(false, ["field" => "password", "msg" => "Formato de contraseña incorrecto (mín. 8, máx. 255, al menos una letra mayúscula, una minúscula y 1 número)."]));
+            }
+
+            if (strlen($biografia) > 100) {
+                return $res->withJson(Respuesta::set(false, ["field" => "biografia", "msg" => "Formato de biografia incorrecto (máx. 160)."]));
+            }
+
+            $nombre_usuario_existente = Usuario::where('username', 'like', $userneme)->get();
+            if (count($nombre_usuario_existente) > 0) {
+                return $res->withJson(Respuesta::set(false, ["field" => "userneme", "msg" => "Este nombre de ususario ya está en uso."]));
+            }
+
+            $email_existente = Usuario::where('email', 'like', $email)->get();
+            if (count($email_existente) > 0) {
+                return $res->withJson(Respuesta::set(false, ["field" => "email", "msg" => "Este email ya está en uso."]));
+            }
+            try {
+                $usuario = Usuario::find($usuarioToken->id);
+                $usuario->username = $userneme;
+                $usuario->email = $email;
+                $usuario->password = $password;
+                $usuario->biografia = $biografia;
+                $usuario->biografia = $biografia;
+                if (isset($body['birthdayDate'])) $usuario->birthdayDate = $body['birthdayDate'];
+                $usuario->save();
+                return $res->withJson(Respuesta::set(true, '', $usuario));
+            } catch (Exception $error) {
+                return $res->withJson(Respuesta::set(false, $error));
+            }
+        }
+    );
+
     $this->post(
         'avatar',
         function ($req, $res, $args) {
