@@ -110,9 +110,9 @@ $app->group('/usuario/', function () {
             $files = $req->getUploadedFiles();
             if (isset($files['avatar'])) {
                 $avatar = $files['avatar']->file;
+                Respuesta::set(false, 'Hey', ["files" => $files, "avatar" => $avatar]);
+                return $res->withJson(Respuesta::toString());
                 if (($avatar <> '') && is_uploaded_file($avatar)) {
-                    Respuesta::set(false, 'Hey', ["files" => $files, "avatar" => $avatar]);
-                    return $res->withJson(Respuesta::toString());
                     try {
                         $image_name = $usuario->id . "-avatar-" . $usuario->username . ".jpg";
                         $tmp_name = $avatar;
