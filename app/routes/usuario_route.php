@@ -4,6 +4,7 @@ use App\Lib\Respuesta;
 use App\Model\Comentario;
 use App\Model\Usuario;
 use App\Model\MangaUsuario;
+use \Firebase\JWT\JWT;
 
 
 $app->group('/usuario/', function () {
@@ -42,6 +43,9 @@ $app->group('/usuario/', function () {
         function ($req, $res, $args) {
             $body = $req->getParsedBody();
             $decodetToken = $req->getAttribute('decoded_token_data');
+            $settings = $this->get('settings');
+            $secret = $settings['jwt']['secret'];
+
             $usuarioToken = $decodetToken['usuario'];
             if (!isset($body["username"]) || !isset($body["email"]) || !isset($body["password"]) || !isset($body["biografia"])) {
                 return $res->withJson(Respuesta::set(false, 'Faltan campos.'));
@@ -86,7 +90,11 @@ $app->group('/usuario/', function () {
                 $usuario->biografia = $biografia;
                 if (isset($body['birthdayDate'])) $usuario->birthdayDate = $body['birthdayDate'];
                 $usuario->save();
-                return $res->withJson(Respuesta::set(true, '', $usuario));
+                $now = new DateTime();
+                $future = new DateTime("+1 week");
+                $payload = ["iat" => $now->getTimeStamp(), "exp" => $future->getTimeStamp(), "usuario" => $usuario];
+                $token = JWT::encode($payload, $secret, "HS256");
+                return $res->withJson(Respuesta::set(true, 'Información del usuario modificada correctamente.', ["usuario" => $usuario, "token" => $token]));
             } catch (Exception $error) {
                 return $res->withJson(Respuesta::set(false, $error));
             }
