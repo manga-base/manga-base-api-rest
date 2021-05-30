@@ -85,11 +85,12 @@ $app->group('/usuario/', function () {
                 $usuario = Usuario::find($usuarioToken->id);
                 $usuario->username = $userneme;
                 $usuario->email = $email;
-                $usuario->password = $password;
+                $usuario->password = password_hash($body["password"], PASSWORD_DEFAULT);
                 $usuario->biografia = $biografia;
                 $usuario->biografia = $biografia;
                 if (isset($body['birthdayDate'])) $usuario->birthdayDate = $body['birthdayDate'];
                 $usuario->save();
+                unset($usuario->password);
                 $now = new DateTime();
                 $future = new DateTime("+1 week");
                 $payload = ["iat" => $now->getTimeStamp(), "exp" => $future->getTimeStamp(), "usuario" => $usuario];
