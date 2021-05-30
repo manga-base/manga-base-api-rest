@@ -112,6 +112,8 @@ $app->group('/usuario/', function () {
                 $avatar = $files['avatar']->file;
                 if (($avatar <> '') && is_uploaded_file($avatar)) {
                     try {
+                        Respuesta::set(false, 'Hey', ["files" => $files, "avatar" => $avatar]);
+                        return $res->withJson(Respuesta::toString());
                         $image_name = $usuario->id . "-avatar-" . $usuario->username . ".jpg";
                         $tmp_name = $avatar;
                         $dest_name = '/var/www/rest.mangabase.tk/public/upload/images/avatars/' . $image_name;
