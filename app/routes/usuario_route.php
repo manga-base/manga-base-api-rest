@@ -56,11 +56,11 @@ $app->group('/usuario/', function () {
             $biografia = $body["biografia"];
 
             if (strlen($userneme) < 3 || strlen($userneme) > 50) {
-                return $res->withJson(Respuesta::set(false, ["field" => "userneme", "msg" => "Formato de nombre de usuario incorrecto (mín. 3, máx. 50)."]));
+                return $res->withJson(Respuesta::set(false, ["field" => "username", "msg" => "Formato de nombre de usuario incorrecto (mín. 3, máx. 50)."]));
             }
 
             if (strlen($email) < 3 || strlen($email) > 100) {
-                return $res->withJson(Respuesta::set(false, ["field" => "userneme", "msg" => "Formato de email incorrecto (mín. 3, máx. 100)."]));
+                return $res->withJson(Respuesta::set(false, ["field" => "username", "msg" => "Formato de email incorrecto (mín. 3, máx. 100)."]));
             }
 
             if (!preg_match("/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,255}$/", $password)) {
@@ -74,7 +74,7 @@ $app->group('/usuario/', function () {
             // // // REVISAR 'where('id', '!=', $usuarioToken->id)' NO VA BE
             $nombre_usuario_existente = Usuario::where('id', '!=', $usuarioToken->id)->where('username', 'like', $userneme)->get();
             if (count($nombre_usuario_existente) > 0) {
-                return $res->withJson(Respuesta::set(false, ["field" => "userneme", "msg" => "Este nombre de ususario ya está en uso."]));
+                return $res->withJson(Respuesta::set(false, ["field" => "username", "msg" => "Este nombre de ususario ya está en uso."]));
             }
 
             $email_existente = Usuario::where('id', '!=', $usuarioToken->id)->where('email', 'like', $email)->get();
