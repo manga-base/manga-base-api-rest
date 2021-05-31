@@ -79,19 +79,18 @@ class Comentario extends \Illuminate\Database\Eloquent\Model
             'usuario.avatar',
         )
             ->where('comentario.idUsuario', $idUsuario)
-            ->where('comentario.idPadre', null)
             ->join('usuario', 'comentario.idUsuario', '=', 'usuario.id')
             ->get();
         foreach ($comentarios as $comentario) {
             $comentario['puntosPositivos'] = PuntuacionComentario::puntosPositivos($comentario->id);
             $comentario['estadoUsuario'] = PuntuacionComentario::estadoUsuario($comentario->id, $idUsuarioPeticion);
-            $possibles_respuestas = Comentario::where('idPadre', $comentario->id)->get('id');
-            $respuestas = [];
-            if (count($possibles_respuestas) > 0) {
-                foreach ($possibles_respuestas as $respuesta) {
-                    array_push($respuestas, Comentario::getComentario($respuesta->id, $idUsuarioPeticion));
-                }
-                $comentario['respuestas'] = $respuestas;
+            $posible_comentario_en_manga = ComentarioManga::where('idComentario', $comentario->id)->get();
+            if (count($posible_comentario_en_manga) > 0) {
+                $comentario['origen'] = $posible_comentario_en_manga;
+            }
+            $posible_comentario_en_usuario = ComentarioUsuario::where('idComentario', $comentario->id)->get();
+            if (count($posible_comentario_en_usuario) > 0) {
+                $comentario['origen'] = $posible_comentario_en_usuario;
             }
         }
         return $comentarios;

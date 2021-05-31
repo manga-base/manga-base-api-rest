@@ -22,7 +22,7 @@ $app->group('/comentario-usuario/', function () {
             try {
                 $comentarioUsuario = new ComentarioUsuario;
                 $comentarioUsuario->idComentario  = $body['idComentario'];
-                $comentarioUsuario->idUsuario  = $body['idUsuario'];
+                $comentarioUsuario->idUsuario = $body['idUsuario'];
                 $comentarioUsuario->save();
                 return $res->withJson(Respuesta::set(true, 'Se ha enviado el comentario'));
             } catch (Exception $error) {
