@@ -89,11 +89,16 @@ class Comentario extends \Illuminate\Database\Eloquent\Model
                 ->join('manga', 'comentario_manga.idManga', '=', 'manga.id')
                 ->get();
             if (count($posible_comentario_en_manga) > 0) {
-                $comentario['origen'] = $posible_comentario_en_manga;
+                $origen = $posible_comentario_en_manga[0];
+                $origen->from = "manga";
+                $comentario['origen'] = $origen;
             }
             $posible_comentario_en_usuario = ComentarioUsuario::select('comentario_usuario.idUsuario', 'usuario.username', 'usuario.avatar')->where('idComentario', $comentario->id)->join('usuario', 'comentario_usuario.idUsuario', '=', 'usuario.id')->get();
             if (count($posible_comentario_en_usuario) > 0) {
-                $comentario['origen'] = $posible_comentario_en_usuario;
+
+                $origen = $posible_comentario_en_usuario[0];
+                $origen->from = "usuario";
+                $comentario['origen'] = $origen;
             }
         }
         return $comentarios;
