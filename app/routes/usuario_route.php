@@ -33,7 +33,7 @@ $app->group('/usuario/', function () {
             unset($usuario->password);
             $usuario['favoritos'] = MangaUsuario::getFav($usuario->id);
             $usuario['stats'] = MangaUsuario::getStats($usuario->id);
-            $usuario['comentarios'] = Comentario::getComentariosUsuario($usuario->id, $decodetToken['usuario']->id);
+            $usuario['comentarios'] = Comentario::getComentariosDeUsuario($usuario->id, $decodetToken['usuario']->id);
             return $res->withJson($usuario);
         }
     );

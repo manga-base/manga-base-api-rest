@@ -11,6 +11,11 @@ $app->group('/comentario/', function () {
         return $res->withJson(Comentario::getComentariosManga($args['id'], $decodetToken['usuario']->id));
     });
 
+    $this->get('usuario/{id}', function ($req, $res, $args) {
+        $decodetToken = $req->getAttribute('decoded_token_data');
+        return $res->withJson(Comentario::getComentariosUsuario($args['id'], $decodetToken['usuario']->id));
+    });
+
     $this->post(
         '',
         function ($req, $res, $args) {

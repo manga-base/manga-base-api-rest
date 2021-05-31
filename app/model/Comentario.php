@@ -66,7 +66,7 @@ class Comentario extends \Illuminate\Database\Eloquent\Model
         return $comentario;
     }
 
-    public static function getComentariosUsuario($idUsuario, $idUsuarioPeticion)
+    public static function getComentariosDeUsuario($idUsuario, $idUsuarioPeticion)
     {
         $comentarios = Comentario::select(
             'comentario.id',
@@ -150,6 +150,80 @@ class Comentario extends \Illuminate\Database\Eloquent\Model
                 ->where('comentario.idPadre', null)
                 ->join('usuario', 'comentario.idUsuario', '=', 'usuario.id')
                 ->join('comentario_manga', 'comentario.id', '=', 'comentario_manga.idComentario')
+                ->get();
+            foreach ($comentarios as $comentario) {
+                $comentario['puntosPositivos'] = PuntuacionComentario::puntosPositivos($comentario->id);
+                $comentario['estadoUsuario'] = PuntuacionComentario::estadoUsuario($comentario->id, $idUsuarioPeticion);
+                $possibles_respuestas = Comentario::where('idPadre', $comentario->id)->get('id');
+                $respuestas = [];
+                if (count($possibles_respuestas) > 0) {
+                    foreach ($possibles_respuestas as $respuesta) {
+                        array_push($respuestas, Comentario::getComentario($respuesta->id, $idUsuarioPeticion));
+                    }
+                    $comentario['respuestas'] = $respuestas;
+                }
+            }
+            Respuesta::set(true, '', $comentarios);
+            return Respuesta::toString();
+        } catch (Exception $error) {
+            Respuesta::set(false, $error);
+            return Respuesta::toString();
+        }
+    }
+
+    public static function getPublicComentariosUsuario($idUsuario)
+    {
+        try {
+            $comentarios = Comentario::select(
+                'comentario.id',
+                'comentario.idPadre',
+                'comentario.idUsuario',
+                'comentario.texto',
+                'comentario.created_at',
+                'comentario.updated_at',
+                'usuario.username',
+                'usuario.avatar'
+            )
+                ->where('comentario_usuario.idUsuario', $idUsuario)
+                ->where('comentario.idPadre', null)
+                ->join('usuario', 'comentario.idUsuario', '=', 'usuario.id')
+                ->join('comentario_usuario', 'comentario.id', '=', 'comentario_usuario.idComentario')
+                ->get();
+            foreach ($comentarios as $comentario) {
+                $possibles_respuestas = Comentario::where('idPadre', $comentario->id)->get('id');
+                $respuestas = [];
+                if (count($possibles_respuestas) > 0) {
+                    foreach ($possibles_respuestas as $respuesta) {
+                        array_push($respuestas, Comentario::getComentarioPublico($respuesta->id));
+                    }
+                    $comentario['respuestas'] = $respuestas;
+                }
+            }
+            Respuesta::set(true, '', $comentarios);
+            return Respuesta::toString();
+        } catch (Exception $error) {
+            Respuesta::set(false, $error);
+            return Respuesta::toString();
+        }
+    }
+
+    public static function getComentariosUsuario($idUsuario, $idUsuarioPeticion)
+    {
+        try {
+            $comentarios = Comentario::select(
+                'comentario.id',
+                'comentario.idPadre',
+                'comentario.idUsuario',
+                'comentario.texto',
+                'comentario.created_at',
+                'comentario.updated_at',
+                'usuario.username',
+                'usuario.avatar'
+            )
+                ->where('comentario_usuario.idUsuario', $idUsuario)
+                ->where('comentario.idPadre', null)
+                ->join('usuario', 'comentario.idUsuario', '=', 'usuario.id')
+                ->join('comentario_usuario', 'comentario.id', '=', 'comentario_usuario.idComentario')
                 ->get();
             foreach ($comentarios as $comentario) {
                 $comentario['puntosPositivos'] = PuntuacionComentario::puntosPositivos($comentario->id);
