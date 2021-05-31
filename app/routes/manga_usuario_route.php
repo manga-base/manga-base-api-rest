@@ -7,6 +7,26 @@ use App\Model\MangaUsuario;
 
 $app->group('/manga-usuario/', function () {
 
+    $this->get('', function ($req, $res, $args) {
+        $decodetToken = $req->getAttribute('decoded_token_data');
+        try {
+            $mangas = MangaUsuario::select(
+                'manga_usuario.idEstado',
+                'manga_usuario.favorito',
+                'manga.id',
+                'manga.tituloPreferido',
+                'manga.foto'
+            )
+                ->join('manga', 'manga_usuario.idManga', '=', 'manga.id')
+                ->where('idUsuario', $decodetToken['usuario']->id)
+                ->get();
+            return $res->withJson(Respuesta::set(true, '', $mangas));
+        } catch (Exception $error) {
+            Respuesta::set(false, $error);
+            return $res->withJson(Respuesta::toString());
+        }
+    });
+
     $this->get('{idManga}/{idUsuario}', function ($req, $res, $args) {
         if (!isset($args['idManga']) || !isset($args['idUsuario'])) {
             Respuesta::set(false, 'Faltan campos.');
