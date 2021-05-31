@@ -71,7 +71,6 @@ $app->group('/usuario/', function () {
                 return $res->withJson(Respuesta::set(false, ["field" => "biografia", "msg" => "Formato de biografia incorrecto (máx. 160)."]));
             }
 
-            // // // REVISAR 'where('id', '!=', $usuarioToken->id)' NO VA BE
             $nombre_usuario_existente = Usuario::where('id', '!=', $usuarioToken->id)->where('username', 'like', $userneme)->get();
             if (count($nombre_usuario_existente) > 0) {
                 return $res->withJson(Respuesta::set(false, ["field" => "username", "msg" => "Este nombre de ususario ya está en uso."]));
@@ -88,7 +87,11 @@ $app->group('/usuario/', function () {
                 $usuario->password = password_hash($body["password"], PASSWORD_DEFAULT);
                 $usuario->biografia = $biografia;
                 $usuario->biografia = $biografia;
-                if (isset($body['birthdayDate'])) $usuario->birthdayDate = $body['birthdayDate'];
+                if (isset($body['birthdayDate'])) {
+                    $usuario->birthdayDate = $body['birthdayDate'];
+                } else {
+                    $usuario->birthdayDate = null;
+                }
                 $usuario->save();
                 unset($usuario->password);
                 $now = new DateTime();
