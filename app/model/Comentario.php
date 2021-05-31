@@ -66,6 +66,31 @@ class Comentario extends \Illuminate\Database\Eloquent\Model
         return $comentario;
     }
 
+    public static function getOrigenComentario($idComentario)
+    {
+        $origen = null;
+        $posible_comentario_en_manga = ComentarioManga::select('comentario_manga.idManga', 'manga.tituloPreferido', 'manga.foto')
+            ->where('idComentario', $idComentario)
+            ->join('manga', 'comentario_manga.idManga', '=', 'manga.id')
+            ->get();
+        if (count($posible_comentario_en_manga) > 0) {
+            $origen = $posible_comentario_en_manga[0];
+            $origen->from = "manga";
+        }
+        $posible_comentario_en_usuario = ComentarioUsuario::select('comentario_usuario.idUsuario', 'usuario.username', 'usuario.avatar')
+            ->where('idComentario', $idComentario)
+            ->join('usuario', 'comentario_usuario.idUsuario', '=', 'usuario.id')
+            ->get();
+        if (count($posible_comentario_en_usuario) > 0) {
+            $origen = $posible_comentario_en_usuario[0];
+            $origen->from = "usuario";
+        }
+        if (!$origen) {
+            $origen = "Es una respuesta";
+        }
+        return $origen;
+    }
+
     public static function getComentariosDeUsuario($idUsuario, $idUsuarioPeticion)
     {
         $comentarios = Comentario::select(
@@ -84,22 +109,7 @@ class Comentario extends \Illuminate\Database\Eloquent\Model
         foreach ($comentarios as $comentario) {
             $comentario['puntosPositivos'] = PuntuacionComentario::puntosPositivos($comentario->id);
             $comentario['estadoUsuario'] = PuntuacionComentario::estadoUsuario($comentario->id, $idUsuarioPeticion);
-            $posible_comentario_en_manga = ComentarioManga::select('comentario_manga.idManga', 'manga.tituloPreferido', 'manga.foto')
-                ->where('idComentario', $comentario->id)
-                ->join('manga', 'comentario_manga.idManga', '=', 'manga.id')
-                ->get();
-            if (count($posible_comentario_en_manga) > 0) {
-                $origen = $posible_comentario_en_manga[0];
-                $origen->from = "manga";
-                $comentario['origen'] = $origen;
-            }
-            $posible_comentario_en_usuario = ComentarioUsuario::select('comentario_usuario.idUsuario', 'usuario.username', 'usuario.avatar')->where('idComentario', $comentario->id)->join('usuario', 'comentario_usuario.idUsuario', '=', 'usuario.id')->get();
-            if (count($posible_comentario_en_usuario) > 0) {
-
-                $origen = $posible_comentario_en_usuario[0];
-                $origen->from = "usuario";
-                $comentario['origen'] = $origen;
-            }
+            $comentario['origen'] = self::getOrigenComentario($comentario->id);
         }
         return $comentarios;
     }
