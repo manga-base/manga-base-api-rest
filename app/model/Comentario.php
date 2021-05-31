@@ -66,11 +66,11 @@ class Comentario extends \Illuminate\Database\Eloquent\Model
         return $comentario;
     }
 
-    public static function getOrigenComentario($idComentario)
+    public static function getOrigenComentario($comentario)
     {
         $origen = null;
         $posible_comentario_en_manga = ComentarioManga::select('comentario_manga.idManga', 'manga.tituloPreferido', 'manga.foto')
-            ->where('idComentario', $idComentario)
+            ->where('idComentario', $comentario->id)
             ->join('manga', 'comentario_manga.idManga', '=', 'manga.id')
             ->get();
         if (count($posible_comentario_en_manga) > 0) {
@@ -78,7 +78,7 @@ class Comentario extends \Illuminate\Database\Eloquent\Model
             $origen->from = "manga";
         }
         $posible_comentario_en_usuario = ComentarioUsuario::select('comentario_usuario.idUsuario', 'usuario.username', 'usuario.avatar')
-            ->where('idComentario', $idComentario)
+            ->where('idComentario', $comentario->id)
             ->join('usuario', 'comentario_usuario.idUsuario', '=', 'usuario.id')
             ->get();
         if (count($posible_comentario_en_usuario) > 0) {
@@ -86,7 +86,11 @@ class Comentario extends \Illuminate\Database\Eloquent\Model
             $origen->from = "usuario";
         }
         if (!$origen) {
-            $origen = "Es una respuesta";
+            if ($comentario->idPadre) {
+                $comentarioPadre = Comentario::find($comentario->idPadre)->get();
+                $origen = self::getOrigenComentario($comentarioPadre);
+                $origen->enRespuestaA = $comentarioPadre;
+            }
         }
         return $origen;
     }
@@ -109,7 +113,7 @@ class Comentario extends \Illuminate\Database\Eloquent\Model
         foreach ($comentarios as $comentario) {
             $comentario['puntosPositivos'] = PuntuacionComentario::puntosPositivos($comentario->id);
             $comentario['estadoUsuario'] = PuntuacionComentario::estadoUsuario($comentario->id, $idUsuarioPeticion);
-            $comentario['origen'] = self::getOrigenComentario($comentario->id);
+            $comentario['origen'] = self::getOrigenComentario($comentario);
         }
         return $comentarios;
     }
