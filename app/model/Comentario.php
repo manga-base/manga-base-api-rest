@@ -88,7 +88,7 @@ class Comentario extends \Illuminate\Database\Eloquent\Model
         if (!$origen) {
             if ($comentario->idPadre) {
                 $comentarioPadre = Comentario::find($comentario->idPadre)->get();
-                $origen = self::getOrigenComentario($comentarioPadre);
+                //$origen = self::getOrigenComentario($comentarioPadre);
                 $origen->enRespuestaA = $comentarioPadre;
             }
         }
