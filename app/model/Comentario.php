@@ -90,7 +90,7 @@ class Comentario extends \Illuminate\Database\Eloquent\Model
                 $comentarioPadre = Comentario::find($comentario->idPadre);
                 $origen = self::getOrigenComentario($comentarioPadre);
                 $enRespuestaA = Usuario::select('id', 'username', 'avatar')->where('id', $comentarioPadre->idUsuario)->get();
-                $enRespuestaA['texto'] = $comentarioPadre;
+                $enRespuestaA[0]->texto = $comentarioPadre->texto;
                 $origen->enRespuestaA = $enRespuestaA[0];
             }
         }
