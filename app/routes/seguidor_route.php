@@ -20,7 +20,7 @@ $app->group('/seguidor/', function () {
                 $seguidor->idSeguido = $args['idUsuario'];
                 #$seguidor->save();
                 $usuario = Usuario::find($args['idUsuario']);
-                return $res->withJson(Respuesta::set(true, '', $seguidor));
+                return $res->withJson(Respuesta::set(true, '', $decodetToken['usuario']));
                 #return $res->withJson(Respuesta::set(true, 'Ahora sigues a ' . $usuario->username . '.'));
             } catch (Exception $error) {
                 return $res->withJson(Respuesta::set(false, $error));
