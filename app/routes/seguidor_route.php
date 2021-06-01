@@ -6,6 +6,29 @@ use App\Model\Usuario;
 
 $app->group('/seguidor/', function () {
 
+    $this->get(
+        '{idUsuario}',
+        function ($req, $res, $args) {
+            if (!isset($args['idUsuario'])) {
+                return $res->withJson(Respuesta::set(false, 'Faltan campos.'));
+            }
+            #$decodetToken = $req->getAttribute('decoded_token_data');
+            try {
+                $seguidores = Seguidor::select('usuario.id', 'usuario.username', 'ususario.avatar')
+                    ->where('idSeguido', $args['idUsuario'])
+                    ->join('usuario', 'seguidor.idUsuario', '=', 'usuario.id')
+                    ->get();
+                $siguiendo = Seguidor::select('usuario.id', 'usuario.username', 'ususario.avatar')
+                    ->where('idUsuario', $args['idUsuario'])
+                    ->join('usuario', 'seguidor.idSeguido', '=', 'usuario.id')
+                    ->get();
+                return $res->withJson(Respuesta::set(true, '', ["seguidores" => $seguidores, "siguiendo" => $siguiendo]));
+            } catch (Exception $error) {
+                return $res->withJson(Respuesta::set(false, $error));
+            }
+        }
+    );
+
     $this->post(
         '{idUsuario}',
         function ($req, $res, $args) {

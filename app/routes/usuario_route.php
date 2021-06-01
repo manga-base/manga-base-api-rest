@@ -4,6 +4,7 @@ use App\Lib\Respuesta;
 use App\Model\Comentario;
 use App\Model\Usuario;
 use App\Model\MangaUsuario;
+use App\Model\Seguidor;
 use \Firebase\JWT\JWT;
 
 
