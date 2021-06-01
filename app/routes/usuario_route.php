@@ -27,15 +27,31 @@ $app->group('/usuario/', function () {
     );
 
     $this->get(
-        '{id}/profile',
+        '{idUsuario}/profile',
         function ($req, $res, $args) {
+            if (!isset($args['idUsuario'])) {
+                return $res->withJson(Respuesta::set(false, 'Faltan campos.'));
+            }
+            $idUsuario = $args['idUsuario'];
             $decodetToken = $req->getAttribute('decoded_token_data');
-            $usuario = Usuario::where('id', $args["id"])->get(Usuario::getColumns())->first();
-            unset($usuario->password);
-            $usuario['favoritos'] = MangaUsuario::getFav($usuario->id);
-            $usuario['stats'] = MangaUsuario::getStats($usuario->id);
-            $usuario['comentarios'] = Comentario::getComentariosDeUsuario($usuario->id, $decodetToken['usuario']->id);
-            return $res->withJson($usuario);
+            try {
+                $usuario = Usuario::where('id', $idUsuario)->get(Usuario::getColumns())->first();
+                unset($usuario->password);
+                $usuario['favoritos'] = MangaUsuario::getFav($idUsuario);
+                $usuario['stats'] = MangaUsuario::getStats($idUsuario);
+                $usuario['comentarios'] = Comentario::getComentariosDeUsuario($idUsuario, $decodetToken['usuario']->id);
+                $usuario['seguidores'] = Seguidor::select('usuario.id', 'usuario.username', 'usuario.avatar')
+                    ->where('idSeguido', $idUsuario)
+                    ->join('usuario', 'seguidor.idUsuario', '=', 'usuario.id')
+                    ->get();
+                $usuario['siguiendo'] = Seguidor::select('usuario.id', 'usuario.username', 'usuario.avatar')
+                    ->where('idUsuario', $idUsuario)
+                    ->join('usuario', 'seguidor.idSeguido', '=', 'usuario.id')
+                    ->get();
+                return $res->withJson(Respuesta::set(true, '', $usuario));
+            } catch (Exception $error) {
+                return $res->withJson(Respuesta::set(false, $error));
+            }
         }
     );
 
