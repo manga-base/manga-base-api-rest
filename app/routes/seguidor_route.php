@@ -13,7 +13,7 @@ $app->group('/seguidor/', function () {
                 return $res->withJson(Respuesta::set(false, 'Faltan campos.'));
             }
             $decodetToken = $req->getAttribute('decoded_token_data');
-            if ($args['idUsuario'] === $decodetToken['usuario']->id) {
+            if ($args['idUsuario'] == $decodetToken['usuario']->id) {
                 return $res->withJson(Respuesta::set(false, 'No puedes seguirte a ti mismo. (｡◕‿◕｡)'));
             }
             try {
