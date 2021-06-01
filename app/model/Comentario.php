@@ -89,9 +89,6 @@ class Comentario extends \Illuminate\Database\Eloquent\Model
             if ($comentario->idPadre) {
                 $comentarioPadre = Comentario::find($comentario->idPadre);
                 $origen = self::getOrigenComentario($comentarioPadre);
-                $enRespuestaA = Usuario::select('id', 'username', 'avatar')->where('id', $comentarioPadre->idUsuario)->get();
-                $enRespuestaA[0]->texto = $comentarioPadre->texto;
-                $origen->enRespuestaA = $enRespuestaA[0];
             }
         }
         return $origen;
