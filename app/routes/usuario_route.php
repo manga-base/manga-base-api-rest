@@ -40,11 +40,11 @@ $app->group('/usuario/', function () {
                 $usuario['favoritos'] = MangaUsuario::getFav($idUsuario);
                 $usuario['stats'] = MangaUsuario::getStats($idUsuario);
                 $usuario['comentarios'] = Comentario::getComentariosDeUsuario($idUsuario, $decodetToken['usuario']->id);
-                $usuario['seguidores'] = Seguidor::select('usuario.id', 'usuario.username', 'usuario.avatar')
+                $usuario['seguidores'] = Seguidor::select('usuario.id', 'usuario.username', 'usuario.avatar', 'usuario.biografia')
                     ->where('idSeguido', $idUsuario)
                     ->join('usuario', 'seguidor.idUsuario', '=', 'usuario.id')
                     ->get();
-                $usuario['siguiendo'] = Seguidor::select('usuario.id', 'usuario.username', 'usuario.avatar')
+                $usuario['siguiendo'] = Seguidor::select('usuario.id', 'usuario.username', 'usuario.avatar', 'usuario.biografia')
                     ->where('idUsuario', $idUsuario)
                     ->join('usuario', 'seguidor.idSeguido', '=', 'usuario.id')
                     ->get();
