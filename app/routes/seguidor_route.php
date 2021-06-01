@@ -18,6 +18,9 @@ $app->group('/seguidor/', function () {
             }
             try {
                 $usuario = Usuario::find($args['idUsuario']);
+                if (!$usuario) {
+                    return $res->withJson(Respuesta::set(false, 'No existe ningun usuario con el id ' . $args['idUsuario'] . '.'));
+                }
 
                 $posible_seguidor = Seguidor::where('idUsuario', $decodetToken['usuario']->id)->where('idSeguido', $args['idUsuario'])->get();
                 if (count($posible_seguidor) > 0) {
