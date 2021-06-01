@@ -18,7 +18,7 @@ $app->group('/seguidor/', function () {
                     ->where('idSeguido', $args['idUsuario'])
                     ->join('usuario', 'seguidor.idUsuario', '=', 'usuario.id')
                     ->get();
-                $siguiendo = Seguidor::select('usuario.id', 'usuario.username', 'ususario.avatar')
+                $siguiendo = Seguidor::select('usuario.id', 'usuario.username', 'usuario.avatar')
                     ->where('idUsuario', $args['idUsuario'])
                     ->join('usuario', 'seguidor.idSeguido', '=', 'usuario.id')
                     ->get();
