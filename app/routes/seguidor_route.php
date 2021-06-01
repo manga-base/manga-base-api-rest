@@ -14,7 +14,7 @@ $app->group('/seguidor/', function () {
             }
             #$decodetToken = $req->getAttribute('decoded_token_data');
             try {
-                $seguidores = Seguidor::select('usuario.id', 'usuario.username', 'ususario.avatar')
+                $seguidores = Seguidor::select('usuario.id', 'usuario.username', 'usuario.avatar')
                     ->where('idSeguido', $args['idUsuario'])
                     ->join('usuario', 'seguidor.idUsuario', '=', 'usuario.id')
                     ->get();
