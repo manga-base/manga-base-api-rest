@@ -13,15 +13,15 @@ $app->group('/seguidor/', function () {
                 return $res->withJson(Respuesta::set(false, 'Faltan campos.'));
             }
             $decodetToken = $req->getAttribute('decoded_token_data');
-            $decodetToken['usuario']->id;
 
             try {
                 $seguidor = new Seguidor();
                 $seguidor->idUsuario = $decodetToken['usuario']->id;
                 $seguidor->idSeguido = $args['idUsuario'];
-                $seguidor->save();
+                #$seguidor->save();
                 $usuario = Usuario::find($args['idUsuario']);
-                return $res->withJson(Respuesta::set(true, 'Ahora sigues a ' . $usuario->username . '.'));
+                return $res->withJson(Respuesta::set(true, '', $seguidor));
+                #return $res->withJson(Respuesta::set(true, 'Ahora sigues a ' . $usuario->username . '.'));
             } catch (Exception $error) {
                 return $res->withJson(Respuesta::set(false, $error));
             }
