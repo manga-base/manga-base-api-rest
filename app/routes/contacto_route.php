@@ -16,6 +16,7 @@ $app->group('/contacto/', function () {
             $nombre = $body["nombre"];
             $email = $body["email"];
             $mensaje = $body["mensaje"];
+            $imagenes = isset($files['imagenes']) ? $files['imagenes'] : "No hay imagenes";
             try {
 
                 $contacto = new Contacto();
@@ -24,7 +25,7 @@ $app->group('/contacto/', function () {
                 $contacto->mensaje = $mensaje;
                 $contacto->save();
 
-                return $res->withJson(Respuesta::set(true, 'Mensaje enviado correctamente.', ["contacto" => $contacto, "files" => $files]));
+                return $res->withJson(Respuesta::set(true, 'Mensaje enviado correctamente.', ["contacto" => $contacto, "files" => $files, "imagenes" => $imagenes]));
             } catch (Exception $error) {
                 return $res->withJson(Respuesta::set(false, $error));
             }
