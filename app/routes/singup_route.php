@@ -34,7 +34,7 @@ $app->group('/signup', function () {
             unset($usuario->password);
 
             $now = new DateTime();
-            $future = new DateTime("+60 minutes");
+            $future = new DateTime("+1 week");
             $settings = $secret; // get settings array.
             $payload = ["iat" => $now->getTimeStamp(), "exp" => $future->getTimeStamp(), "usuario" => $usuario];
             $token = JWT::encode($payload, $secret, "HS256");
