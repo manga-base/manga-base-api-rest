@@ -10,16 +10,16 @@ $app->group('/contacto/', function () {
         function ($req, $res, $args) {
             $body = $req->getParsedBody();
             $files = $req->getUploadedFiles();
-            if (!isset($body["name"]) || !isset($body["email"]) || !isset($body["mensaje"])) {
+            if (!isset($body["nombre"]) || !isset($body["email"]) || !isset($body["mensaje"])) {
                 return $res->withJson(Respuesta::set(false, 'Faltan campos.'));
             }
-            $name = $body["name"];
+            $nombre = $body["nombre"];
             $email = $body["email"];
             $mensaje = $body["mensaje"];
             try {
 
                 $contacto = new Contacto();
-                $contacto->name = $name;
+                $contacto->nombre = $nombre;
                 $contacto->email = $email;
                 $contacto->mensaje = $mensaje;
                 $contacto->save();
