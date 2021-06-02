@@ -18,7 +18,6 @@ $app->group('/contacto/', function () {
             $email = $body["email"];
             $mensaje = $body["mensaje"];
             try {
-
                 $contacto = new Contacto();
                 $contacto->nombre = $nombre;
                 $contacto->email = $email;
