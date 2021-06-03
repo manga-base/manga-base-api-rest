@@ -10,10 +10,10 @@ $app->group('/private-contacto/', function () {
         '',
         function ($req, $res, $args) {
             $decodetToken = $req->getAttribute('decoded_token_data');
-            return $res->withJson(Respuesta::set(true, 'Hey', $decodetToken['usuario']));
-            if ($decodetToken['usuario']->admin === "1") {
+            if ($decodetToken['usuario']->admin === "0") {
                 return $res->withJson(Respuesta::set(false, 'No eres administrador! ಠ_ಠ'));
             }
+            return $res->withJson(Respuesta::set(true, 'Hey', $decodetToken['usuario']));
         }
     );
 });
