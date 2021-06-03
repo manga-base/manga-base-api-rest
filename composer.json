@@ -19,6 +19,7 @@
     "require": {
         "slim/slim": "3.*",
         "illuminate/database": "^8.38",
-        "tuupola/slim-jwt-auth": "^3.5"
+        "tuupola/slim-jwt-auth": "^3.5",
+        "mailjet/mailjet-apiv3-php": "^1.5"
     }
 }
