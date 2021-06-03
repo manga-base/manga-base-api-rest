@@ -2,7 +2,7 @@
 
 namespace App\Lib;
 
-#require '../vendor/autoload.php';
+require '../vendor/autoload.php';
 
 use Mailjet\Resources;
 
