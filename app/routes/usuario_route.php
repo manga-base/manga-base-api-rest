@@ -97,6 +97,7 @@ $app->group('/usuario/', function () {
             if (count($email_existente) > 0) {
                 return $res->withJson(Respuesta::set(false, ["field" => "email", "msg" => "Este email ya está en uso."]));
             }
+            
             try {
                 $usuario = Usuario::find($usuarioToken->id);
                 $usuario->username = $userneme;
