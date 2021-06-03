@@ -13,7 +13,6 @@ $app->group('/private-contacto/', function () {
             if ($decodetToken['usuario']->admin === 0) {
                 return $res->withJson(Respuesta::set(false, 'No eres administrador! ಠ_ಠ'));
             }
-            return $res->withJson(Respuesta::set(true, 'Hey', $decodetToken['usuario']));
             try {
                 $mensajes = Contacto::where('leido', 0)->get();
                 return $res->withJson(Respuesta::set(true, '', $mensajes));
