@@ -50,10 +50,6 @@ $app->group('/signup/', function () {
             try {
                 $activationCode = md5(rand(0, 1000));
 
-                //Enviamos mail
-                $mailResponse = Mail::sendActivationAccountMail($email, $activationCode);
-                return $res->withJson(Respuesta::set(true, '', $mailResponse));
-                
                 // Creamos usuario
                 $usuario = new Usuario();
                 $usuario->username = $userneme;
