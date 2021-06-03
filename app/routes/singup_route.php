@@ -30,6 +30,7 @@ $app->group('/signup/', function () {
             $usuario->username = $body["username"];
             $usuario->password = password_hash($body["password"], PASSWORD_DEFAULT);
             $usuario->email = $body["email"];
+            $usuario->activationCode = "aaa";
             $usuario->save();
             unset($usuario->password);
 
