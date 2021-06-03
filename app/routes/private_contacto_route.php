@@ -15,6 +15,9 @@ $app->group('/private-contacto/', function () {
             }
             try {
                 $mensajes = Contacto::where('leido', 0)->get();
+                foreach ($mensajes as $mensaje) {
+                    $mensaje['fotos'] = FotoContacto::where('idContacto', $mensaje->id)->get();
+                }
                 return $res->withJson(Respuesta::set(true, '', $mensajes));
             } catch (Exception $error) {
                 return $res->withJson(Respuesta::set(false, $error));
