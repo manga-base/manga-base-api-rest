@@ -3,7 +3,7 @@
 use App\Model\Usuario;
 use \Firebase\JWT\JWT;
 
-$app->group('/signup', function () {
+$app->group('/signup/', function () {
     $this->post(
         '',
         function ($req, $res, $args) {
