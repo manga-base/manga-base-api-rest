@@ -1,6 +1,7 @@
 <?php
 
 use App\Lib\Respuesta;
+use App\Model\Message;
 use App\Model\Usuario;
 
 $app->group('/activate/', function () {
@@ -20,6 +21,13 @@ $app->group('/activate/', function () {
             } catch (Exception $error) {
                 return $res->withJson(Respuesta::set(true, $error));
             }
+        }
+    );
+
+    $this->get(
+        'test',
+        function ($req, $res, $args) {
+            return $res->withJson(Respuesta::set(true, '', Message::checkSpace()));
         }
     );
 });
