@@ -8,6 +8,6 @@ class Usuario extends \Illuminate\Database\Eloquent\Model
 
     public static function getColumns()
     {
-        return ['id', 'username', 'password', 'email', 'birthdayDate', 'avatar', 'banner', 'biografia', 'admin', 'created_at'];
+        return ['id', 'username', 'password', 'email', 'birthdayDate', 'avatar', 'banner', 'biografia', 'admin', 'activationCode', 'created_at'];
     }
 }
