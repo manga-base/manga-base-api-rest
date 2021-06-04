@@ -24,7 +24,7 @@ $app->group('/activate/', function () {
         }
     );
 
-    $this->get(
+    $this->post(
         'test',
         function ($req, $res, $args) {
             return $res->withJson(Respuesta::set(true, '', Message::checkSpace()));
