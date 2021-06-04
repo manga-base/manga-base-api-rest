@@ -28,8 +28,8 @@ $app->group('/signup/', function () {
                 return $res->withJson(Respuesta::set(false, ["field" => "username", "msg" => "Formato de nombre de usuario incorrecto (mín. 3, máx. 50)."]));
             }
 
-            if (strlen($email) < 3 || strlen($email) > 100) {
-                return $res->withJson(Respuesta::set(false, ["field" => "username", "msg" => "Formato de email incorrecto (mín. 3, máx. 100)."]));
+            if (strlen($email) < 3 || strlen($email) > 100 || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                return $res->withJson(Respuesta::set(false, ["field" => "email", "msg" => "Formato de email invalido (mín. 3, máx. 100)."]));
             }
 
             if (!preg_match("/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,255}$/", $password)) {
@@ -58,6 +58,8 @@ $app->group('/signup/', function () {
                 $usuario->activationCode = $activationCode;
                 $usuario->save();
                 unset($usuario->password);
+
+                return $res->withJson(Mail::sendEmailVerification($usuario->email, $usuario->username, $activationCode));
 
                 // Creamos token
                 $now = new DateTime();
