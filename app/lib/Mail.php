@@ -149,15 +149,15 @@ class Mail
                   <div class=\"main\">
                     <div class=\"paper\">
                       <h1>¡Hola, <span class=\"green-text\">$recipientName</span>!</h1>
-                      <p>Gracias por registrarte en nuestra página, para completar la verificación del email pulsa en este botón de abajo.</p>
+                      <p style=\"color: #fff;\">Gracias por registrarte en nuestra página, para completar la verificación del email pulsa en este botón de abajo.</p>
                       <a href=\"$url\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"button\"> Verifica tu correo electrónico </a>
                       <p>O verifique usando este enlace: <a class=\"link\" href=\"$url\" target=\"_blank\" rel=\"noopener noreferrer\">$url</a></p>
                       <br />
-                      <p>Si no has creado ninguna cuenta utilizando este correo electrónico, por favor ignora este email.</p>
+                      <p style=\"color: #fff;\">Si no has creado ninguna cuenta utilizando este correo electrónico, por favor ignora este email.</p>
                     </div>
                   </div>
                   <div class=\"footer\">
-                    <p class=\"footer-text\">
+                    <p style=\"color: #fff;\" class=\"footer-text\">
                       ©2021 Manga Base. ·
                       <a class=\"link\" href=\"https://mangabase.tk/contact\" target=\"_blank\" rel=\"noopener noreferrer\">Contacto</a>
                     </p>

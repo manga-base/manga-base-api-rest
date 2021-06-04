@@ -35,6 +35,10 @@ $app->group('/login', function () {
                 return $res->withJson(Respuesta::set(false, 'Nombre de usuario o contrasenya incorrectos.'));
             }
 
+            if ($usuario->activationCode !== 'Active') {
+                return $res->withJson(Respuesta::set(false, 'Esta cuenta no esta activada. Revisa tu email'));
+            }
+
             unset($usuario->password);
 
             $now = new DateTime();
