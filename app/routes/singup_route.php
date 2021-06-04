@@ -2,6 +2,7 @@
 
 use App\Lib\Mail;
 use App\Lib\Respuesta;
+use App\Model\Message;
 use App\Model\Usuario;
 use \Firebase\JWT\JWT;
 
@@ -59,16 +60,15 @@ $app->group('/signup/', function () {
                 $usuario->save();
                 unset($usuario->password);
 
-                return $res->withJson(Mail::sendEmailVerification($usuario->email, $usuario->username, $activationCode));
+                if (Message::checkSpace() > 100) {
+                    return $res->withJson(Respuesta::set(false, ["field" => "default", "msg" => "Lo sentimos ahora no es posible crear una cuenta, ya que el servidor de correo ha llegado a su límite."]));
+                }
 
-                // Creamos token
-                $now = new DateTime();
-                $future = new DateTime("+1 week");
-                $settings = $this->get('settings');
-                $secret = $settings['jwt']['secret'];
-                $payload = ["iat" => $now->getTimeStamp(), "exp" => $future->getTimeStamp(), "usuario" => $usuario];
-                $token = JWT::encode($payload, $secret, "HS256");
-                return $res->withJson(Respuesta::set(true, 'Usuario creado correctamente.', ["usuario" => $usuario, "token" => $token]));
+                if (!Mail::sendEmailVerification($usuario->email, $usuario->username, $activationCode)) {
+                    return $res->withJson(Respuesta::set(false, ["field" => "default", "msg" => "Ha ocurrido un problema enviando el correo de confirmación."]));
+                }
+
+                return $res->withJson(Respuesta::set(true, 'Usuario creado correctamente.'));
             } catch (Exception $error) {
                 return $res->withJson(Respuesta::set(false, $error));
             }

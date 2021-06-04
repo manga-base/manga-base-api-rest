@@ -23,7 +23,7 @@ $app->group('/activate/', function () {
             }
         }
     );
-
+    // hola tomeu pau borra aixó :)
     $this->post(
         'test',
         function ($req, $res, $args) {
