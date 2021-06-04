@@ -23,7 +23,7 @@ class Message extends \Illuminate\Database\Eloquent\Model
             $message->messageID = $data['Messages'][0]['To'][0]['MessageID'];;
             $message->messageHref = $data['Messages'][0]['To'][0]['MessageHref'];;
             $message->save();
-            return Respuesta::set(true, '');
+            return Respuesta::set(true, '', $message);
         } catch (Exception $error) {
             return Respuesta::set(false, $error);
         }
