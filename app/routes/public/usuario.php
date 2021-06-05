@@ -29,7 +29,7 @@ $app->group('/public-usuario/', function () {
                 )
                     ->join('usuario', 'actividad_usuario.idUsuario', '=', 'usuario.id')
                     ->groupBy('idUsuario')
-                    ->orderByDesc('COUNT(*)')
+                    ->orderByRaw('COUNT(*) DESC')
                     ->limit(3)
                     ->get();
                 return $res->withJson(Respuesta::set(true, '', $usuariosDestacados));
