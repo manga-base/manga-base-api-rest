@@ -1,7 +1,6 @@
 <?php
 
 use App\Lib\Respuesta;
-use App\Model\Message;
 use App\Model\Usuario;
 
 $app->group('/activate/', function () {
@@ -19,15 +18,8 @@ $app->group('/activate/', function () {
                 $usuario->save();
                 return $res->withRedirect('https://mangabase.tk/email-verificado');
             } catch (Exception $error) {
-                return $res->withJson(Respuesta::set(true, $error));
+                return $res->withJson(Respuesta::set(false, $error));
             }
-        }
-    );
-    // hola tomeu pau borra aixó :)
-    $this->post(
-        'test',
-        function ($req, $res, $args) {
-            return $res->withJson(Respuesta::set(true, '', Message::checkSpace()));
         }
     );
 });

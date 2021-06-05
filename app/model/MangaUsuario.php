@@ -6,21 +6,9 @@ class MangaUsuario extends \Illuminate\Database\Eloquent\Model
 {
     protected $table = 'manga_usuario';
 
-    public static function getColumns()
-    {
-        return ['id', 'favorito', 'nota', 'idEstado', 'volumenes', 'capitulos', 'idManga', 'idUsuario', 'updated_at'];
-    }
-
     public static function getStats(Int $idUsuario)
     {
-        // $tuplas = MangaUsuario::select("
-        //     SELECT SUM(capitulos) totalCapitulos, SUM(volumenes) totalVolumenes, COUNT(idManga) totalMangas 
-        //     FROM `manga_usuario` 
-        //     WHERE `idUsuari` = " . $idUsuario . "
-        // ");
-
         $stats = [];
-
         $stats["totalCapitulosLeidos"] = MangaUsuario::where('idUsuario', $idUsuario)->sum('capitulos');
         $stats["totalVolumenesLeidos"] = MangaUsuario::where('idUsuario', $idUsuario)->sum('volumenes');
         $stats["totalMangas"] = MangaUsuario::where('idUsuario', $idUsuario)->count('idManga');
@@ -31,7 +19,6 @@ class MangaUsuario extends \Illuminate\Database\Eloquent\Model
             ->where('manga_usuario.idUsuario', $idUsuario)
             ->groupBy('manga_usuario.idEstado')
             ->get();
-
         $stats["lastMangaEntries"] = MangaUsuario::select(
             'manga.id',
             'manga.tituloPreferido',
@@ -51,32 +38,17 @@ class MangaUsuario extends \Illuminate\Database\Eloquent\Model
             ->orderBy('updated_at', 'DESC')
             ->limit(3)
             ->get();
-
         $stats['calendar'] = ActividadUsuario::selectRaw('DATE(updated_at) AS day, COUNT(*) AS value')->where('idUsuario', $idUsuario)->groupByRaw('DATE(updated_at)')->get();
-
         return $stats;
-
-        // DB::statement("call estadisticas_usuario(:idUsuario, @estadisticas)", ["idUsuario" => $idUsuario]);
-        // $resultado = DB::select("select @estadisticas AS stats");
     }
 
     public static function getFav(Int $idUsuario)
     {
         $mangas_favoritos = [];
-        $tuplas = MangaUsuario::where('idUsuario', '=', $idUsuario)->where('favorito', '=', 1)->get(MangaUsuario::getColumns());
-
+        $tuplas = MangaUsuario::where('idUsuario', '=', $idUsuario)->where('favorito', '=', 1)->get();
         foreach ($tuplas as $tupla) {
             array_push($mangas_favoritos, Manga::where('id', $tupla->idManga)->get(Manga::getSmallColumns())->first());
         }
-
         return $mangas_favoritos;
     }
-
-    // public function getFav(Int $idManga, Int $idUsuario)
-    // {
-    //     return $this::select($this::getColumns())
-    //         ->where('idManga', '=', $idManga)
-    //         ->where('idUsuario', '=', $idUsuario)
-    //         ->get();
-    // }
 }

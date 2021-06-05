@@ -9,8 +9,7 @@ $app->add(new JwtAuthentication([
     "secret" => "g4165gf1fdfsd6fgdsg65fd6fsdfsd1v654dfsd15",
     "algorithm" => ["HS256"],
     "error" => function ($res, $args) {
-        Respuesta::set(false, $args["message"]);
-        return $res->withJson(Respuesta::toString());
+        return $res->withJson(Respuesta::set(false, $args["message"]));
     }
 ]));
 $app->add(function ($req, $res, $next) {

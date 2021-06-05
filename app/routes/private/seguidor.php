@@ -9,9 +9,6 @@ $app->group('/seguidor/', function () {
     $this->post(
         '{idUsuario}',
         function ($req, $res, $args) {
-            if (!isset($args['idUsuario'])) {
-                return $res->withJson(Respuesta::set(false, 'Faltan campos.'));
-            }
             $decodetToken = $req->getAttribute('decoded_token_data');
             if ($args['idUsuario'] == $decodetToken['usuario']->id) {
                 return $res->withJson(Respuesta::set(false, 'No puedes seguirte a ti mismo. (｡◕‿◕｡)'));
@@ -41,9 +38,6 @@ $app->group('/seguidor/', function () {
     $this->delete(
         '{idUsuario}',
         function ($req, $res, $args) {
-            if (!isset($args['idUsuario'])) {
-                return $res->withJson(Respuesta::set(false, 'Faltan campos.'));
-            }
             $decodetToken = $req->getAttribute('decoded_token_data');
             try {
                 $usuario = Usuario::find($args['idUsuario']);

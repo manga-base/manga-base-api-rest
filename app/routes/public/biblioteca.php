@@ -14,11 +14,9 @@ $app->group('/biblioteca/', function () {
                 DB::statement("call filtros_biblioteca(@filtros)");
                 $resultado = DB::select("select @filtros AS filtros");
                 $filtros = json_decode($resultado[0]->filtros);
-                Respuesta::set(true, '', $filtros);
-                return $res->withJson(Respuesta::toString());
+                return $res->withJson(Respuesta::set(true, '', $filtros));
             } catch (Exception $error) {
-                Respuesta::set(false, $error);
-                return $res->withJson(Respuesta::toString());
+                return $res->withJson(Respuesta::set(false, $error));
             }
         }
     );
@@ -36,11 +34,9 @@ $app->group('/biblioteca/', function () {
                     $manga['revistas'] = $info->revistas;
                     $manga['generos'] = $info->generos;
                 }
-                Respuesta::set(true, '', $mangas);
-                return $res->withJson(Respuesta::toString());
+                return $res->withJson(Respuesta::set(true, '', $mangas));
             } catch (Exception $error) {
-                Respuesta::set(false, $error);
-                return $res->withJson(Respuesta::toString());
+                return $res->withJson(Respuesta::set(false, $error));
             }
         }
     );

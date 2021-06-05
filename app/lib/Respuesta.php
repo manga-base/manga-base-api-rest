@@ -37,6 +37,7 @@ class Respuesta
             "datos" => self::$datos,
             "correcta" => self::$correcta,
             "mensaje" => self::$mensaje,
+            "serverTime" => date(DATE_ISO8601),
         );
     }
 }

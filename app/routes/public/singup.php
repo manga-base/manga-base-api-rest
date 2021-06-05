@@ -4,7 +4,6 @@ use App\Lib\Mail;
 use App\Lib\Respuesta;
 use App\Model\Message;
 use App\Model\Usuario;
-use \Firebase\JWT\JWT;
 
 $app->group('/signup/', function () {
     $this->post(
@@ -51,7 +50,6 @@ $app->group('/signup/', function () {
             try {
                 $activationCode = md5(rand(0, 1000));
 
-                // Creamos usuario
                 $usuario = new Usuario();
                 $usuario->username = $userneme;
                 $usuario->password = password_hash($password, PASSWORD_DEFAULT);
