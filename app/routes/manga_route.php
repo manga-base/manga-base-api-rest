@@ -33,7 +33,7 @@ $app->group('/manga/', function () {
         'recomendados',
         function ($req, $res, $args) {
             try {
-                $mangas = BaseMangas::orderByDesc('nota')->limit(5)->get();
+                $mangas = BaseMangas::orderByDesc('nota')->limit(6)->get();
                 return $res->withJson(Respuesta::set(true, '', $mangas));
             } catch (Exception $error) {
                 return $res->withJson(Respuesta::set(false, $error));
