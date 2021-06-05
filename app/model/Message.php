@@ -32,6 +32,7 @@ class Message extends \Illuminate\Database\Eloquent\Model
     public static function checkSpace()
     {
         $messagesCount = Message::whereRaw("DATE(`created_at`) = CURRENT_DATE")->count();
+        $messagesCount = $messagesCount == null ? 0 : $messagesCount;
         return $messagesCount;
     }
 }
