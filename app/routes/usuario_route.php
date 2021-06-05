@@ -84,7 +84,7 @@ $app->group('/usuario/', function () {
                 return $res->withJson(Respuesta::set(false, ["field" => "password", "msg" => "Formato de contraseña incorrecto (mín. 8, máx. 255, al menos una letra mayúscula, una minúscula y 1 número)."]));
             }
 
-            if (strlen($biografia) > 100) {
+            if (strlen($biografia) > 160) {
                 return $res->withJson(Respuesta::set(false, ["field" => "biografia", "msg" => "Formato de biografia incorrecto (máx. 160)."]));
             }
 
