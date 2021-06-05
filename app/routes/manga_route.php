@@ -2,7 +2,6 @@
 
 use App\Lib\Respuesta;
 use App\Model\BaseMangas;
-use App\Model\Manga;
 use Illuminate\Database\Capsule\Manager as DB;
 
 
@@ -34,7 +33,7 @@ $app->group('/manga/', function () {
         'recomendados',
         function ($req, $res, $args) {
             try {
-                $mangas = Manga::orderBy('nota')->limit(5)->get();
+                $mangas = BaseMangas::orderBy('nota')->limit(5)->get();
                 return $res->withJson(Respuesta::set(true, '', $mangas));
             } catch (Exception $error) {
                 return $res->withJson(Respuesta::set(false, $error));
