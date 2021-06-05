@@ -2,13 +2,14 @@
 
 use App\Lib\Respuesta;
 use App\Model\BaseMangas;
+use App\Model\Manga;
 use Illuminate\Database\Capsule\Manager as DB;
 
 
 $app->group('/manga/', function () {
 
     $this->get(
-        '{id}',
+        'info/{id}',
         function ($req, $res, $args) {
             try {
                 $manga = BaseMangas::find($args['id']);
@@ -22,11 +23,21 @@ $app->group('/manga/', function () {
                 $manga['autores'] = $info->autores;
                 $manga['revistas'] = $info->revistas;
                 $manga['generos'] = $info->generos;
-                Respuesta::set(true, '', $manga);
-                return $res->withJson(Respuesta::toString());
+                return $res->withJson(Respuesta::set(true, '', $manga));
             } catch (Exception $error) {
-                Respuesta::set(false, $error);
-                return $res->withJson(Respuesta::toString());
+                return $res->withJson(Respuesta::set(false, $error));
+            }
+        }
+    );
+
+    $this->get(
+        'recomendados',
+        function ($req, $res, $args) {
+            try {
+                $mangas = Manga::orderBy('nota')->limit(5)->get();
+                return $res->withJson(Respuesta::set(true, '', $mangas));
+            } catch (Exception $error) {
+                return $res->withJson(Respuesta::set(false, $error));
             }
         }
     );
