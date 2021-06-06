@@ -98,7 +98,7 @@ $app->group('/manga-usuario/', function () {
                 $mangaUsuario->save();
                 return $res->withJson(Respuesta::set(true, 'Se ha actualizado la información'));
             } catch (Exception $error) {
-                return $res->withJson(Respuesta::set(false, $error));
+                return $res->withJson(Respuesta::set(false, $error->getMessage()));
             }
         }
 
