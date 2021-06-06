@@ -103,4 +103,27 @@ $app->group('/manga-usuario/', function () {
         }
 
     );
+
+    $this->delete('{id}', function ($req, $res, $args) {
+        if (!isset($args['id'])) {
+            return $res->withJson(Respuesta::set(false, 'Faltan campos.'));
+        }
+
+        $id = $args['id'];
+        $decodetToken = $req->getAttribute('decoded_token_data');
+
+        try {
+            $mangaUsuario = MangaUsuario::find($id);
+            if (!$mangaUsuario) {
+                return $res->withJson(Respuesta::set(false, 'La información que intentas eliminar no existe.'));
+            }
+            if ($mangaUsuario->idUsuario != $decodetToken['usuario']->id) {
+                return $res->withJson(Respuesta::set(false, '¡No puedes eliminar información de mangas de otras personas! ಠ_ಠ'));
+            }
+            $mangaUsuario->delete();
+            return $res->withJson(Respuesta::set(true, 'Información eliminada correctamente'));
+        } catch (Exception $error) {
+            return $res->withJson(Respuesta::set(false, $error->getMessage()));
+        }
+    });
 });
