@@ -75,7 +75,7 @@ $app->group('/manga-usuario/', function () {
                 $mangaUsuario->idUsuario = $decodetToken['usuario']->id;
             }
 
-            if (!isset($body["idEstado"]) && $body["idEstado"] > 0) {
+            if (!isset($body["idEstado"]) || $body["idEstado"] < 1) {
                 return $res->withJson(Respuesta::set(false, 'Necesitas poner un estado al manga para poder guardarlo en tu lista.'));
             }
 
