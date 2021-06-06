@@ -23,14 +23,10 @@ $app->group('/usuario/', function () {
         '',
         function ($req, $res, $args) {
             $body = $req->getParsedBody();
-            $decodetToken = $req->getAttribute('decoded_token_data');
-            $settings = $this->get('settings');
-            $secret = $settings['jwt']['secret'];
-
-            $usuarioToken = $decodetToken['usuario'];
             if (!isset($body["username"]) || !isset($body["password"]) || !isset($body["biografia"])) {
                 return $res->withJson(Respuesta::set(false, 'Faltan campos.'));
             }
+
             $userneme = $body["username"];
             $password = $body["password"];
             $biografia = $body["biografia"];
@@ -47,6 +43,8 @@ $app->group('/usuario/', function () {
                 return $res->withJson(Respuesta::set(false, ["field" => "biografia", "msg" => "Formato de biografia incorrecto (máx. 160)."]));
             }
 
+            $decodetToken = $req->getAttribute('decoded_token_data');
+            $usuarioToken = $decodetToken['usuario'];
             try {
                 $nombre_usuario_existente = Usuario::where('id', '!=', $usuarioToken->id)->where('username', 'like', $userneme)->get();
                 if (count($nombre_usuario_existente) > 0) {
@@ -67,6 +65,8 @@ $app->group('/usuario/', function () {
                 $now = new DateTime();
                 $future = new DateTime("+1 week");
                 $payload = ["iat" => $now->getTimeStamp(), "exp" => $future->getTimeStamp(), "usuario" => $usuario];
+                $settings = $this->get('settings');
+                $secret = $settings['jwt']['secret'];
                 $token = JWT::encode($payload, $secret, "HS256");
                 return $res->withJson(Respuesta::set(true, 'Información del usuario modificada correctamente.', ["usuario" => $usuario, "token" => $token]));
             } catch (Exception $error) {
@@ -133,6 +133,41 @@ $app->group('/usuario/', function () {
                 $us->banner = $image_name;
                 $us->save();
                 return $res->withJson(Respuesta::set(true, 'Banner modificado correctamente.'));
+            } catch (Exception $error) {
+                return $res->withJson(Respuesta::set(false, $error->getMessage()));
+            }
+        }
+    );
+
+    $this->post(
+        'delete/{idUsuario}',
+        function ($req, $res, $args) {
+            $body = $req->getParsedBody();
+            if (!isset($body["password"]) || !isset($args['idUsuario'])) {
+                return $res->withJson(Respuesta::set(false, 'Faltan campos.'));
+            }
+
+            $password = $body["password"];
+
+            $decodetToken = $req->getAttribute('decoded_token_data');
+            $usuarioToken = $decodetToken['usuario'];
+            try {
+                $posible_usuario = Usuario::find($args['idUsuario']);
+                if (!$posible_usuario) {
+                    return $res->withJson(Respuesta::set(false, 'No existe ningun usuario con el identificador ' . $args['idUsuario'] . '.'));
+                }
+                $usuario = $posible_usuario;
+
+                if ($usuarioToken->id !== $usuario->id) {
+                    return $res->withJson(Respuesta::set(false, 'No puedes eliminar cuentas de otras personas! ಠ_ಠ'));
+                }
+
+                if (!password_verify($password, $usuario->password)) {
+                    return $res->withJson(Respuesta::set(false, 'Contraseña incorrecta.'));
+                }
+
+                $usuario->delete();
+                return $res->withJson(Respuesta::set(true, 'Cuenta eliminada correctamente.'));
             } catch (Exception $error) {
                 return $res->withJson(Respuesta::set(false, $error->getMessage()));
             }
