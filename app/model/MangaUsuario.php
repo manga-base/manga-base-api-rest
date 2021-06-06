@@ -41,14 +41,4 @@ class MangaUsuario extends \Illuminate\Database\Eloquent\Model
         $stats['calendar'] = ActividadUsuario::selectRaw('DATE(updated_at) AS day, COUNT(*) AS value')->where('idUsuario', $idUsuario)->groupByRaw('DATE(updated_at)')->get();
         return $stats;
     }
-
-    public static function getFav(Int $idUsuario)
-    {
-        $mangas_favoritos = [];
-        $tuplas = MangaUsuario::where('idUsuario', '=', $idUsuario)->where('favorito', '=', 1)->get();
-        foreach ($tuplas as $tupla) {
-            array_push($mangas_favoritos, Manga::where('id', $tupla->idManga)->get(Manga::getSmallColumns())->first());
-        }
-        return $mangas_favoritos;
-    }
 }
