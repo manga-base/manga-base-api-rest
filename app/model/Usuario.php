@@ -17,7 +17,7 @@ class Usuario extends \Illuminate\Database\Eloquent\Model
                 return Respuesta::set(false, 'No existe ningun usuario con el identificador ' . $idUsuario . ',');
             }
             unset($usuario->password);
-            $usuario['favoritos'] = MangaUsuario::getFav($idUsuario);
+            $usuario['favoritos'] = MangaUsuario::where('idUsuario', '=', $idUsuario)->where('favorito', '=', 1)->join('base_mangas', 'manga_usuario.idManga', 'base_mangas.id')->get();
             $usuario['stats'] = MangaUsuario::getStats($idUsuario);
             if ($idUsuarioPeticion) {
                 $usuario['comentarios'] = Comentario::getComentariosDeUsuario($idUsuario, $idUsuarioPeticion);
