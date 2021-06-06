@@ -39,7 +39,7 @@ class MangaUsuario extends \Illuminate\Database\Eloquent\Model
             ->limit(3)
             ->get();
         $stats['calendar'] = ActividadUsuario::selectRaw('DATE(updated_at) AS day, COUNT(*) AS value')->where('idUsuario', $idUsuario)->groupByRaw('DATE(updated_at)')->get();
-        $stats['porNota'] = MangaUsuario::select('nota', 'COUNT(*) AS value')->where('idUsuario', $idUsuario)->groupBy('nota')->orderBy('nota')->get();
+        $stats['porNota'] = MangaUsuario::selectRaw('nota, COUNT(*) AS value')->where('idUsuario', $idUsuario)->groupBy('nota')->orderBy('nota')->get();
         return $stats;
     }
 }
