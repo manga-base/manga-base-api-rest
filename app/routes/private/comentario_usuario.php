@@ -34,7 +34,7 @@ $app->group('/comentario-usuario/', function () {
                 $comentarioUsuario->save();
                 return $res->withJson(Respuesta::set(true, 'Se ha enviado el comentario'));
             } catch (Exception $error) {
-                return $res->withJson(Respuesta::set(false, $error));
+                return $res->withJson(Respuesta::set(false, $error->getMessage()));
             }
         }
 

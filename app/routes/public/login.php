@@ -37,7 +37,7 @@ $app->group('/login', function () {
                 $token = JWT::encode($payload, $secret, "HS256");
                 return $res->withJson(Respuesta::set(true, 'Bienvenido.', ["usuario" => $usuario, "token" => $token]));
             } catch (Exception $error) {
-                return $res->withJson(Respuesta::set(false, $error));
+                return $res->withJson(Respuesta::set(false, $error->getMessage()));
             }
         }
     );

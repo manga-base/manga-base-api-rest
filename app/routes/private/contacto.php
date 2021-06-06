@@ -20,7 +20,7 @@ $app->group('/private-contacto/', function () {
                 }
                 return $res->withJson(Respuesta::set(true, '', $mensajes));
             } catch (Exception $error) {
-                return $res->withJson(Respuesta::set(false, $error));
+                return $res->withJson(Respuesta::set(false, $error->getMessage()));
             }
         }
     );
@@ -41,7 +41,7 @@ $app->group('/private-contacto/', function () {
                 $mensaje->save();
                 return $res->withJson(Respuesta::set(true, 'Mensaje marcado como leído'));
             } catch (Exception $error) {
-                return $res->withJson(Respuesta::set(false, $error));
+                return $res->withJson(Respuesta::set(false, $error->getMessage()));
             }
         }
     );

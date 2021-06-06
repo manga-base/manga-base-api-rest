@@ -68,7 +68,7 @@ $app->group('/signup/', function () {
 
                 return $res->withJson(Respuesta::set(true, 'Usuario creado correctamente.'));
             } catch (Exception $error) {
-                return $res->withJson(Respuesta::set(false, $error));
+                return $res->withJson(Respuesta::set(false, $error->getMessage()));
             }
         }
     );

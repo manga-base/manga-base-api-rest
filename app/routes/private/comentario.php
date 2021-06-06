@@ -38,7 +38,7 @@ $app->group('/comentario/', function () {
             }
             return $res->withJson(Respuesta::set(true, '', $comentarios));
         } catch (Exception $error) {
-            return $res->withJson(Respuesta::set(false, $error));
+            return $res->withJson(Respuesta::set(false, $error->getMessage()));
         }
     });
 
@@ -74,7 +74,7 @@ $app->group('/comentario/', function () {
             }
             return $res->withJson(Respuesta::set(true, '', $comentarios));
         } catch (Exception $error) {
-            return $res->withJson(Respuesta::set(false, $error));
+            return $res->withJson(Respuesta::set(false, $error->getMessage()));
         }
     });
 
@@ -98,7 +98,7 @@ $app->group('/comentario/', function () {
                 $comentario->save();
                 return $res->withJson(Respuesta::set(true, 'Se ha enviado el comentario', Comentario::getComentario($comentario->id, $decodetToken['usuario']->id)));
             } catch (Exception $error) {
-                return $res->withJson(Respuesta::set(false, $error));
+                return $res->withJson(Respuesta::set(false, $error->getMessage()));
             }
         }
 
@@ -125,7 +125,7 @@ $app->group('/comentario/', function () {
                 $comentario->save();
                 return $res->withJson(Respuesta::set(true, 'Se ha editado el comentario', $comentario));
             } catch (Exception $error) {
-                return $res->withJson(Respuesta::set(false, $error));
+                return $res->withJson(Respuesta::set(false, $error->getMessage()));
             }
         }
     );
@@ -147,7 +147,7 @@ $app->group('/comentario/', function () {
                 $comentario->delete();
                 return $res->withJson(Respuesta::set(true, 'Se ha eliminado el comentario'));
             } catch (Exception $error) {
-                return $res->withJson(Respuesta::set(false, $error));
+                return $res->withJson(Respuesta::set(false, $error->getMessage()));
             }
         }
     );

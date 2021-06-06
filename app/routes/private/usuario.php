@@ -70,7 +70,7 @@ $app->group('/usuario/', function () {
                 $token = JWT::encode($payload, $secret, "HS256");
                 return $res->withJson(Respuesta::set(true, 'Información del usuario modificada correctamente.', ["usuario" => $usuario, "token" => $token]));
             } catch (Exception $error) {
-                return $res->withJson(Respuesta::set(false, $error));
+                return $res->withJson(Respuesta::set(false, $error->getMessage()));
             }
         }
     );
@@ -102,7 +102,7 @@ $app->group('/usuario/', function () {
                 $us->save();
                 return $res->withJson(Respuesta::set(true, 'Avatar modificado correctamente.'));
             } catch (Exception $error) {
-                return $res->withJson(Respuesta::set(false, $error));
+                return $res->withJson(Respuesta::set(false, $error->getMessage()));
             }
         }
     );
@@ -134,7 +134,7 @@ $app->group('/usuario/', function () {
                 $us->save();
                 return $res->withJson(Respuesta::set(true, 'Banner modificado correctamente.'));
             } catch (Exception $error) {
-                return $res->withJson(Respuesta::set(false, $error));
+                return $res->withJson(Respuesta::set(false, $error->getMessage()));
             }
         }
     );

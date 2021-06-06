@@ -41,7 +41,7 @@ $app->group('/contacto/', function () {
                 }
                 return $res->withJson(Respuesta::set(true, 'Mensaje enviado correctamente.'));
             } catch (Exception $error) {
-                return $res->withJson(Respuesta::set(false, $error));
+                return $res->withJson(Respuesta::set(false, $error->getMessage()));
             }
         }
     );

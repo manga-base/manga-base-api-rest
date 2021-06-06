@@ -16,7 +16,7 @@ $app->group('/biblioteca/', function () {
                 $filtros = json_decode($resultado[0]->filtros);
                 return $res->withJson(Respuesta::set(true, '', $filtros));
             } catch (Exception $error) {
-                return $res->withJson(Respuesta::set(false, $error));
+                return $res->withJson(Respuesta::set(false, $error->getMessage()));
             }
         }
     );
@@ -36,7 +36,7 @@ $app->group('/biblioteca/', function () {
                 }
                 return $res->withJson(Respuesta::set(true, '', $mangas));
             } catch (Exception $error) {
-                return $res->withJson(Respuesta::set(false, $error));
+                return $res->withJson(Respuesta::set(false, $error->getMessage()));
             }
         }
     );

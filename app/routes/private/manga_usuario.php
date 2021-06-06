@@ -22,7 +22,7 @@ $app->group('/manga-usuario/', function () {
                 ->get();
             return $res->withJson(Respuesta::set(true, '', $mangas));
         } catch (Exception $error) {
-            return $res->withJson(Respuesta::set(false, $error));
+            return $res->withJson(Respuesta::set(false, $error->getMessage()));
         }
     });
 
@@ -46,7 +46,7 @@ $app->group('/manga-usuario/', function () {
             $info['volumenesManga'] = $manga->volumenes;
             return $res->withJson(Respuesta::set(true, '', $info));
         } catch (Exception $error) {
-            return $res->withJson(Respuesta::set(false, $error));
+            return $res->withJson(Respuesta::set(false, $error->getMessage()));
         }
     });
 

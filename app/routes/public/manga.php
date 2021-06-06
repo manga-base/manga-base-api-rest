@@ -24,7 +24,7 @@ $app->group('/manga/', function () {
                 $manga['generos'] = $info->generos;
                 return $res->withJson(Respuesta::set(true, '', $manga));
             } catch (Exception $error) {
-                return $res->withJson(Respuesta::set(false, $error));
+                return $res->withJson(Respuesta::set(false, $error->getMessage()));
             }
         }
     );
@@ -36,7 +36,7 @@ $app->group('/manga/', function () {
                 $mangas = BaseMangas::orderByDesc('nota')->limit(6)->get();
                 return $res->withJson(Respuesta::set(true, '', $mangas));
             } catch (Exception $error) {
-                return $res->withJson(Respuesta::set(false, $error));
+                return $res->withJson(Respuesta::set(false, $error->getMessage()));
             }
         }
     );

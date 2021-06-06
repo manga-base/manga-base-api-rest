@@ -34,7 +34,7 @@ $app->group('/public-comentario/', function () {
             }
             return $res->withJson(Respuesta::set(true, '', $comentarios));
         } catch (Exception $error) {
-            return $res->withJson(Respuesta::set(false, $error));
+            return $res->withJson(Respuesta::set(false, $error->getMessage()));
         }
     });
 
@@ -67,7 +67,7 @@ $app->group('/public-comentario/', function () {
             }
             return $res->withJson(Respuesta::set(true, '', $comentarios));
         } catch (Exception $error) {
-            return $res->withJson(Respuesta::set(false, $error));
+            return $res->withJson(Respuesta::set(false, $error->getMessage()));
         }
     });
 });

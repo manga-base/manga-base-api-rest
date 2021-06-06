@@ -40,7 +40,7 @@ $app->group('/puntuacion-comentario/', function () {
                 }
                 return $res->withJson(Respuesta::set(true, 'Puntuación actualizada correctamente.'));
             } catch (Exception $error) {
-                return $res->withJson(Respuesta::set(false, $error));
+                return $res->withJson(Respuesta::set(false, $error->getMessage()));
             }
         }
     );
@@ -60,7 +60,7 @@ $app->group('/puntuacion-comentario/', function () {
                 $posiblePuntuacion->delete();
                 return $res->withJson(Respuesta::set(true, 'Puntuación eliminada correctamente.', null));
             } catch (Exception $error) {
-                return $res->withJson(Respuesta::set(false, $error));
+                return $res->withJson(Respuesta::set(false, $error->getMessage()));
             }
         }
     );

@@ -30,7 +30,7 @@ $app->group('/seguidor/', function () {
                 $seguidor->save();
                 return $res->withJson(Respuesta::set(true, 'Ahora sigues a ' . $usuario->username . '.'));
             } catch (Exception $error) {
-                return $res->withJson(Respuesta::set(false, $error));
+                return $res->withJson(Respuesta::set(false, $error->getMessage()));
             }
         }
     );
@@ -54,7 +54,7 @@ $app->group('/seguidor/', function () {
                 $seguidor->delete();
                 return $res->withJson(Respuesta::set(true, 'Ya no sigues a ' . $usuario->username . '.'));
             } catch (Exception $error) {
-                return $res->withJson(Respuesta::set(false, $error));
+                return $res->withJson(Respuesta::set(false, $error->getMessage()));
             }
         }
     );

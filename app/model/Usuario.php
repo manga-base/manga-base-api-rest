@@ -34,7 +34,7 @@ class Usuario extends \Illuminate\Database\Eloquent\Model
                 ->get();
             return Respuesta::set(true, '', $usuario);
         } catch (Exception $error) {
-            return Respuesta::set(false, $error);
+            return Respuesta::set(false, $error->getMessage());
         }
     }
 }

@@ -34,7 +34,7 @@ $app->group('/public-usuario/', function () {
                     ->get();
                 return $res->withJson(Respuesta::set(true, '', $usuariosDestacados));
             } catch (Exception $error) {
-                return $res->withJson(Respuesta::set(false, $error));
+                return $res->withJson(Respuesta::set(false, $error->getMessage()));
             }
         }
     );

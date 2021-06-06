@@ -25,7 +25,7 @@ class Message extends \Illuminate\Database\Eloquent\Model
             $message->save();
             return Respuesta::set(true, '', $message);
         } catch (Exception $error) {
-            return Respuesta::set(false, $error);
+            return Respuesta::set(false, $error->getMessage());
         }
     }
 

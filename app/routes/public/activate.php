@@ -18,7 +18,7 @@ $app->group('/activate/', function () {
                 $usuario->save();
                 return $res->withRedirect('https://mangabase.tk/email-verificado');
             } catch (Exception $error) {
-                return $res->withJson(Respuesta::set(false, $error));
+                return $res->withJson(Respuesta::set(false, $error->getMessage()));
             }
         }
     );
