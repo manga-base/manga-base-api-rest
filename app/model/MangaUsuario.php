@@ -40,7 +40,19 @@ class MangaUsuario extends \Illuminate\Database\Eloquent\Model
             ->get();
         $stats['calendar'] = ActividadUsuario::selectRaw('DATE(updated_at) AS day, COUNT(*) AS value')->where('idUsuario', $idUsuario)->groupByRaw('DATE(updated_at)')->get();
         $stats['porNota'] = MangaUsuario::selectRaw('nota, COUNT(*) AS value')->where('idUsuario', $idUsuario)->groupBy('nota')->orderBy('nota')->get();
-        $stats['porAño'] = MangaUsuario::selectRaw('`manga`.`añoDePublicacion` AS x, COUNT(*) AS y')->where('idUsuario', $idUsuario)->join('manga', 'manga_usuario.idManga', '=', 'manga.id')->groupBy('manga.añoDePublicacion')->orderBy('manga.añoDePublicacion')->get();
+        $stats['porAño'] = MangaUsuario::selectRaw('`manga`.`añoDePublicacion` AS x, COUNT(*) AS y')
+            ->where('idUsuario', $idUsuario)
+            ->join('manga', 'manga_usuario.idManga', '=', 'manga.id')
+            ->groupBy('manga.añoDePublicacion')
+            ->orderBy('manga.añoDePublicacion')
+            ->get();
+        $stats['porDemografia'] = MangaUsuario::selectRaw('`manga`.`idDemografia` AS id, `demografia`.`demografia` AS label, COUNT(*) AS value')
+            ->where('idUsuario', $idUsuario)
+            ->join('manga', 'manga_usuario.idManga', '=', 'manga.id')
+            ->join('demografia', 'manga.idDemografia', '=', 'demografia.idDemografia')
+            ->groupBy('manga.idDemografia')
+            ->orderBy('manga.idDemografia')
+            ->get();
         return $stats;
     }
 }
