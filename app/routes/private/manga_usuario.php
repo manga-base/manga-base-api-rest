@@ -41,6 +41,7 @@ $app->group('/manga-usuario/', function () {
             }
             $arrayInfo = MangaUsuario::where('idManga', $idManga)->where('idUsuario', $decodetToken['usuario']->id)->get();
             $info = isset($arrayInfo[0]) ? $arrayInfo[0] : [];
+            $info['titulo'] = $manga->tituloPreferido;
             $info['estados'] = EstadosMangaUsuario::all();
             $info['capitulosManga'] = $manga->capitulos;
             $info['volumenesManga'] = $manga->volumenes;
