@@ -16,7 +16,7 @@ $app->group('/activate/', function () {
                 $usuario = $posible_usuario[0];
                 $usuario->activationCode = 'Active';
                 $usuario->save();
-                return $res->withRedirect('https://mangabase.tk/email-verificado');
+                return $res->withRedirect("https://mangabase.tk/email-verificado");
             } catch (Exception $error) {
                 return $res->withJson(Respuesta::set(false, $error->getMessage()));
             }
