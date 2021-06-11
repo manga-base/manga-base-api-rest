@@ -80,6 +80,7 @@ $app->group('/private-manga/', function () {
                 $manga->argumento = $argumento;
                 $manga->añoDePublicacion = $añoDePublicacion;
                 $manga->idEstado = $estado;
+                $manga->nota = 0;
                 $manga->idDemografia = $demografia;
                 foreach (["tituloES", "tituloEN", "capitulos", "volumenes", "añoDeFinalizacion"] as $v) {
                     if (isset($body[$v])) {
