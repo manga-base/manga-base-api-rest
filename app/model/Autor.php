@@ -10,7 +10,7 @@ class Autor extends \Illuminate\Database\Eloquent\Model
 
     public static function getAutoresManga($idManga)
     {
-        return Autor::where('manga_autor.idManga', $idManga)->join('manga_autor', 'autor.idAutor', '=', 'manga_autor.idAutor')->get('autor.idAutor', 'autor.nombre');
+        return Autor::select('autor.idAutor', 'autor.nombre')->where('manga_autor.idManga', $idManga)->join('manga_autor', 'autor.idAutor', '=', 'manga_autor.idAutor')->get();
     }
 
     public static function getAutoresMangaArray($idManga)
