@@ -266,7 +266,7 @@ $app->group('/private-manga/', function () {
                 $newManga['revistas'] = Revista::getRevistasMangaArray($manga->id);
                 $newManga['generos'] = Genero::getGenerosMangaArray($manga->id);
 
-                return $res->withJson(Respuesta::set(true, 'Manga insertado correctamente.', $newManga));
+                return $res->withJson(Respuesta::set(true, 'Manga modificado correctamente.', $newManga));
             } catch (Exception $error) {
                 return $res->withJson(Respuesta::set(false, $error->getMessage()));
             }
