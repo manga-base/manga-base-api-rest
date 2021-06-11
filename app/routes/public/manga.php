@@ -20,7 +20,7 @@ $app->group('/manga/', function () {
                 DB::statement("call info_manga(:idManga, @info)", ["idManga" => $manga->id]);
                 $resultado = DB::select("select @info AS info");
                 $info = json_decode($resultado[0]->info);
-                $manga['autores'] = Autor::where('manga_autor.idManga', $manga->id)->join('manga_autor', 'autor.idAutor', '=', 'manga_autor.idAutor')->pluck('autor.nombre')->toArray();
+                $manga['autores'] = Autor::getAutoresManga($manga->id);
                 $manga['revistas'] = $info->revistas;
                 $manga['generos'] = $info->generos;
                 return $res->withJson(Respuesta::set(true, '', $manga));
