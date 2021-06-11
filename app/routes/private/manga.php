@@ -273,7 +273,11 @@ $app->group('/private-manga/', function () {
             }
 
             try {
-                Manga::find($args['id'])->delete();
+                $posibleManga = Manga::find($args['id']);
+                if (!$posibleManga) {
+                    return $res->withJson(Respuesta::set(false, 'El manga que intentas eliminar no existe.'));
+                }
+                $posibleManga->delete();
                 return $res->withJson(Respuesta::set(true, 'Manga eliminado correctamente'));
             } catch (Exception $error) {
                 return $res->withJson(Respuesta::set(false, $error->getMessage()));
