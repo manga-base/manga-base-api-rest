@@ -15,10 +15,11 @@ class Revista extends \Illuminate\Database\Eloquent\Model
 
     public static function getRevistasEditorialManga($idManga)
     {
-        return Revista::where('manga_revista.idManga', $idManga)
+        return Revista::selectRaw('CONCAT(revista.nombre, " - ", editorial.nombre) AS label')
+            ->where('manga_revista.idManga', $idManga)
             ->join('manga_revista', 'revista.idRevista', '=', 'manga_revista.idRevista')
             ->join('editorial', 'revista.idEditorial', '=', 'editorial.idEditorial')
-            ->pluck('CONCAT(revista.nombre, " - ", editorial.nombre)')
+            ->pluck('label')
             ->toArray();
     }
 }
