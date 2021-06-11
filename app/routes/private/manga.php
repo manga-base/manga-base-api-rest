@@ -2,7 +2,8 @@
 
 use App\Lib\Respuesta;
 use App\Model\Autor;
-use App\Model\BaseMangas;
+use App\Model\Demografia;
+use App\Model\Estado;
 use App\Model\Genero;
 use App\Model\Manga;
 use App\Model\MangaAutor;
@@ -11,6 +12,22 @@ use App\Model\MangaRevista;
 use App\Model\Revista;
 
 $app->group('/private-manga/', function () {
+
+    $this->get(
+        '',
+        function ($req, $res, $args) {
+            try {
+                $datos['estados'] = Estado::all();
+                $datos['demografias'] = Demografia::all();
+                $datos['autores'] = Autor::all();
+                $datos['revistas'] = Revista::all();
+                $datos['generos'] = Genero::all();
+                return $res->withJson(Respuesta::set(true, '', $datos));
+            } catch (Exception $error) {
+                return $res->withJson(Respuesta::set(false, $error->getMessage()));
+            }
+        }
+    );
 
     $this->post(
         '',
