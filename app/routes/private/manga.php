@@ -166,7 +166,7 @@ $app->group('/private-manga/', function () {
                 !isset($body["estado"]) ||
                 !isset($body["demografia"])
             ) {
-                return $res->withJson(Respuesta::set(false, 'Faltan campos.'));
+                return $res->withJson(Respuesta::set(false, 'Faltan campos.', $body));
             }
 
             $tituloPreferido = $body["tituloPreferido"];
