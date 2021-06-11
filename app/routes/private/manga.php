@@ -214,10 +214,7 @@ $app->group('/private-manga/', function () {
                 }
 
                 if (isset($body["autores"])) {
-                    $mangasAutoresExistentes = MangaAutor::where('idManga', $manga->id)->get();
-                    foreach ($mangasAutoresExistentes as $mangaAutor) {
-                        $mangaAutor->delete();
-                    }
+                    $mangasAutoresExistentes = MangaAutor::where('idManga', $manga->id)->delete();
                     foreach ($body["autores"] as $idAutor) {
                         $autor = Autor::find($idAutor);
                         if ($autor) {
@@ -230,10 +227,7 @@ $app->group('/private-manga/', function () {
                 }
 
                 if (isset($body["revistas"])) {
-                    $mangasRevistasExistentes = MangaRevista::where('idManga', $manga->id)->get();
-                    foreach ($mangasRevistasExistentes as $mangaRevista) {
-                        $mangaRevista->delete();
-                    }
+                    $mangasRevistasExistentes = MangaRevista::where('idManga', $manga->id)->delete();
                     foreach ($body["revistas"] as $idRevista) {
                         $revista = Revista::find($idRevista);
                         if ($revista) {
@@ -246,10 +240,7 @@ $app->group('/private-manga/', function () {
                 }
 
                 if (isset($body["generos"])) {
-                    $mangasGenerosExistentes = MangaGenero::where('idManga', $manga->id)->get();
-                    foreach ($mangasGenerosExistentes as $mangaGenero) {
-                        $mangaGenero->delete();
-                    }
+                    $mangasGenerosExistentes = MangaGenero::where('idManga', $manga->id)->delete();
                     foreach ($body["generos"] as $idGenero) {
                         $genero = Genero::find($idGenero);
                         if ($genero) {
