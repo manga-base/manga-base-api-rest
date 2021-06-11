@@ -3,6 +3,7 @@
 use App\Lib\Respuesta;
 use App\Model\Autor;
 use App\Model\Demografia;
+use App\Model\Editorial;
 use App\Model\Estado;
 use App\Model\Genero;
 use App\Model\Manga;
@@ -22,6 +23,7 @@ $app->group('/private-manga/', function () {
                 $datos['autores'] = Autor::all();
                 $datos['revistas'] = Revista::all();
                 $datos['generos'] = Genero::all();
+                $datos['editoriales'] = Editorial::all();
                 return $res->withJson(Respuesta::set(true, '', $datos));
             } catch (Exception $error) {
                 return $res->withJson(Respuesta::set(false, $error->getMessage()));
