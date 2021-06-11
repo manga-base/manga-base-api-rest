@@ -263,4 +263,21 @@ $app->group('/private-manga/', function () {
             }
         }
     );
+
+    $this->delete(
+        '{id}',
+        function ($req, $res, $args) {
+            $decodetToken = $req->getAttribute('decoded_token_data');
+            if ($decodetToken['usuario']->admin === 0) {
+                return $res->withJson(Respuesta::set(false, 'No eres administrador! ಠ_ಠ'));
+            }
+
+            try {
+                Manga::find($args['id'])->delete();
+                return $res->withJson(Respuesta::set(true, 'Manga eliminado correctamente'));
+            } catch (Exception $error) {
+                return $res->withJson(Respuesta::set(false, $error->getMessage()));
+            }
+        }
+    );
 });
