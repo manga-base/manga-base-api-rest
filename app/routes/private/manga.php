@@ -137,7 +137,7 @@ $app->group('/private-manga/', function () {
 
                 $newManga = BaseMangas::find($manga->id);
                 $newManga['autores'] = Autor::getAutoresMangaArray($manga->id);
-                $newManga['revistas'] = Revista::getRevistasEditorialManga($manga->id);
+                $newManga['revistas'] = Revista::getRevistasMangaArray($manga->id);
                 $newManga['generos'] = Genero::getGenerosMangaArray($manga->id);
 
                 return $res->withJson(Respuesta::set(true, 'Manga insertado correctamente.', $newManga));
