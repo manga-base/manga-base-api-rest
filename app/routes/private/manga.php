@@ -147,7 +147,7 @@ $app->group('/private-manga/', function () {
         }
     );
 
-    $this->put(
+    $this->post(
         '{id}',
         function ($req, $res, $args) {
             $decodetToken = $req->getAttribute('decoded_token_data');
