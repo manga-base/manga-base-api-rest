@@ -10,7 +10,7 @@ class Revista extends \Illuminate\Database\Eloquent\Model
 
     public static function getRevistasManga($idManga)
     {
-        return Revista::where('manga_revista.idManga', $idManga)->join('manga_revista', 'revista.idRevista', '=', 'manga_revista.idRevista')->get();
+        return Revista::where('manga_revista.idManga', $idManga)->join('manga_revista', 'revista.idRevista', '=', 'manga_revista.idRevista')->get('revista.idRevista', 'revista.nombre');
     }
 
     public static function getRevistasEditorialManga($idManga)

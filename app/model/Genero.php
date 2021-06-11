@@ -10,7 +10,7 @@ class Genero extends \Illuminate\Database\Eloquent\Model
 
     public static function getGenerosManga($idManga)
     {
-        return Genero::where('manga_genero.idManga', $idManga)->join('manga_genero', 'genero.idGenero', '=', 'manga_genero.idGenero')->get();
+        return Genero::where('manga_genero.idManga', $idManga)->join('manga_genero', 'genero.idGenero', '=', 'manga_genero.idGenero')->get('genero.idGenero', 'genero.genero');
     }
 
     public static function getGenerosMangaArray($idManga)
