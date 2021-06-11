@@ -1,6 +1,7 @@
 <?php
 
 use App\Lib\Respuesta;
+use App\Model\Autor;
 use App\Model\BaseMangas;
 use Illuminate\Database\Capsule\Manager as DB;
 
@@ -19,7 +20,7 @@ $app->group('/manga/', function () {
                 DB::statement("call info_manga(:idManga, @info)", ["idManga" => $manga->id]);
                 $resultado = DB::select("select @info AS info");
                 $info = json_decode($resultado[0]->info);
-                $manga['autores'] = $info->autores;
+                $manga['autores'] = Autor::where('manga_autor.idManga', $manga->id)->join('manga_autor')->get('autor.nombre');
                 $manga['revistas'] = $info->revistas;
                 $manga['generos'] = $info->generos;
                 return $res->withJson(Respuesta::set(true, '', $manga));
