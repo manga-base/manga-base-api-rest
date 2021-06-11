@@ -30,9 +30,9 @@ $app->group('/biblioteca/', function () {
             try {
                 $mangas = BaseMangas::all();
                 foreach ($mangas as $manga) {
-                    $manga['autores'] = Autor::getAutoresManga($manga->id);
+                    $manga['autores'] = Autor::getAutoresMangaArray($manga->id);
                     $manga['revistas'] = Revista::getRevistasEditorialManga($manga->id);
-                    $manga['generos'] = Genero::getGenerosManga($manga->id);
+                    $manga['generos'] = Genero::getGenerosMangaArray($manga->id);
                 }
                 return $res->withJson(Respuesta::set(true, '', $mangas));
             } catch (Exception $error) {
