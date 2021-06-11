@@ -17,6 +17,11 @@ $app->group('/private-manga/', function () {
     $this->get(
         '',
         function ($req, $res, $args) {
+            $decodetToken = $req->getAttribute('decoded_token_data');
+            if ($decodetToken['usuario']->admin === 0) {
+                return $res->withJson(Respuesta::set(false, 'No eres administrador! ಠ_ಠ'));
+            }
+
             try {
                 $datos['estados'] = Estado::all();
                 $datos['demografias'] = Demografia::all();
@@ -34,6 +39,11 @@ $app->group('/private-manga/', function () {
     $this->post(
         '',
         function ($req, $res, $args) {
+            $decodetToken = $req->getAttribute('decoded_token_data');
+            if ($decodetToken['usuario']->admin === 0) {
+                return $res->withJson(Respuesta::set(false, 'No eres administrador! ಠ_ಠ'));
+            }
+
             $body = $req->getParsedBody();
             $files = $req->getUploadedFiles();
             if (
