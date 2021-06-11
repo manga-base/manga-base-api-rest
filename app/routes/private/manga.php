@@ -2,6 +2,7 @@
 
 use App\Lib\Respuesta;
 use App\Model\Autor;
+use App\Model\BaseMangas;
 use App\Model\Demografia;
 use App\Model\Editorial;
 use App\Model\Estado;
@@ -134,7 +135,12 @@ $app->group('/private-manga/', function () {
                     }
                 }
 
-                return $res->withJson(Respuesta::set(true, 'Mensaje enviado correctamente.'));
+                $newManga = BaseMangas::find($manga->id);
+                $newManga['autores'] = Autor::getAutoresManga($manga->id);
+                $newManga['revistas'] = Revista::getRevistasManga($manga->id);
+                $newManga['generos'] = Genero::getGenerosManga($manga->id);
+
+                return $res->withJson(Respuesta::set(true, 'Manga insertado correctamente.', $newManga));
             } catch (Exception $error) {
                 return $res->withJson(Respuesta::set(false, $error->getMessage()));
             }

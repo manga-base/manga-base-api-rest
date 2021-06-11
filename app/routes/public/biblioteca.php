@@ -3,6 +3,8 @@
 use App\Lib\Respuesta;
 use App\Model\Autor;
 use App\Model\BaseMangas;
+use App\Model\Genero;
+use App\Model\Revista;
 use Illuminate\Database\Capsule\Manager as DB;
 
 
@@ -28,12 +30,9 @@ $app->group('/biblioteca/', function () {
             try {
                 $mangas = BaseMangas::all();
                 foreach ($mangas as $manga) {
-                    DB::statement("call info_manga(:idManga, @info)", ["idManga" => $manga->id]);
-                    $resultado = DB::select("select @info AS info");
-                    $info = json_decode($resultado[0]->info);
                     $manga['autores'] = Autor::getAutoresManga($manga->id);
-                    $manga['revistas'] = $info->revistas;
-                    $manga['generos'] = $info->generos;
+                    $manga['revistas'] = Revista::getRevistasManga($manga->id);
+                    $manga['generos'] = Genero::getGenerosManga($manga->id);
                 }
                 return $res->withJson(Respuesta::set(true, '', $mangas));
             } catch (Exception $error) {
