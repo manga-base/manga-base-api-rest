@@ -26,9 +26,9 @@ $app->group('/private-manga/', function () {
             try {
                 $datos['estados'] = Estado::all();
                 $datos['demografias'] = Demografia::all();
-                $datos['autores'] = Autor::all();
-                $datos['revistas'] = Revista::all();
-                $datos['generos'] = Genero::all();
+                $datos['autores'] = Autor::select('autor.idAutor', 'autor.nombre')->all();
+                $datos['revistas'] = Revista::select('revista.idRevista', 'revista.nombre')->all();
+                $datos['generos'] = Genero::select('genero.idGenero', 'genero.genero')->all();
                 $datos['editoriales'] = Editorial::all();
                 return $res->withJson(Respuesta::set(true, '', $datos));
             } catch (Exception $error) {
