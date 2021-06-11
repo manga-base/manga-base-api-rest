@@ -18,7 +18,7 @@ $app->group('/manga/', function () {
                     return $res->withJson(Respuesta::toString());
                 }
                 $manga['autores'] = Autor::getAutoresManga($manga->id);
-                $manga['revistas'] = Revista::getRevistasManga($manga->id);
+                $manga['revistas'] = Revista::getRevistasEditorialManga($manga->id);
                 $manga['generos'] = Genero::getGenerosManga($manga->id);
                 return $res->withJson(Respuesta::set(true, '', $manga));
             } catch (Exception $error) {
